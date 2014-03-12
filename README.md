@@ -114,8 +114,15 @@ Now the verification email will be in the form:
 
 Try it!
 
+What you will see:
 
+![Form prompting for email](http://i.imgur.com/ffcxHQg.png)
 
+![Verification Email Sent](http://i.imgur.com/NRNP7ch.png)
+
+![Verification link in email](http://i.imgur.com/UZmQKUO.png)
+
+![Verified](http://i.imgur.com/Xr9qcag.png)
 
 ## Useful Links:
 

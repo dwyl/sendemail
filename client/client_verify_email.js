@@ -29,6 +29,7 @@ Template.verifyemail.events({
           Meteor.call('serverVerifyEmail', email, userId, function(){
             console.log("Verification Email Sent")
             snd.play();
+            Router.go('/checkemail');
           });   
         }
 

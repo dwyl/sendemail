@@ -9,12 +9,22 @@ Router.map(function () {
         path: '/verify-email/:token',
         action: 'verifyEmail'
     });
+
+    this.route('verified', {
+        path: '/verified',
+        template: 'verified'
+    });
+
+    this.route('checkemail', {
+        path: '/checkemail',
+        template: 'checkemail'
+    });
 });
 
 AccountController = RouteController.extend({
     verifyEmail: function () {
         Accounts.verifyEmail(this.params.token, function () {
-            Router.go('/');
+            Router.go('/verified');
         });
     }
 });

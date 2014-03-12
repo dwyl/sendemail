@@ -3,6 +3,9 @@ Meteor Email (Verification)
 
 Send verification, notification and reminder emails from any Meteor app.
 
+Result:
+![meteor verify email](http://i.imgur.com/ffcxHQg.png)
+
 
 Meteor has a method for verifying that an email addres is valid: <br />
 **Accounts.sendVerificationEmail(userId, [email])** 
@@ -108,6 +111,7 @@ Now the verification email will be in the form:
 ![Iron router verification email](http://i.imgur.com/0ZVIOWl.png)
 
 Try it!
+
 
 
 

@@ -8,6 +8,10 @@ Email.send({
   text: "Its pretty easy to send emails via gmail."
 });
 */
+Accounts.urls.verifyEmail = function (token) {
+  return Meteor.absoluteUrl('verify-email/' + token);
+};
+
 Meteor.methods({
   serverVerifyEmail: function(email, userId, callback) {
     console.log("Email to verify:" +email + " | userId: "+userId);

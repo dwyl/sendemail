@@ -64,7 +64,8 @@ That will send an email in the form:
 
 ![Meteor verification email](http://i.imgur.com/BpUckrK.png)
 
-The virification link: http://localhost:3000/#/verify-email/gDSfHxYWuzwRiqmmN
+The standard Meteor virification link looks like: 
+http://yoursite.com/#/verify-email/gDSfHxYWuzwRiqmmN
 
 
 ### Add Iron Router
@@ -76,7 +77,7 @@ Add the [Iron Router](https://github.com/EventedMind/iron-router) package
 mrt add iron-router
 ```
 
-**routes.js**
+Iron router **routes.js** with controller function for handling verification.
 
 ```javascript
 Router.map(function () {
@@ -102,8 +103,11 @@ AccountController = RouteController.extend({
 // see: https://github.com/EventedMind/iron-router/issues/3
 ```
 
+Now the verification email will be in the form:
 
+![Iron router verification email](http://i.imgur.com/0ZVIOWl.png)
 
+Try it!
 
 
 

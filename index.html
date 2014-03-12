@@ -1,6 +1,7 @@
 <head>
   <title>meteor-email</title>
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/style.css"/>
 </head>
 
 <body>
@@ -8,10 +9,12 @@
 </body>
 
 <template name="verifyemail">
-  <h1>Easily Verify You Own an Email Address</h1>
-  <form>
-
-  	  <input type="button" value="Click" />
+  <h1>Verify Your Email Address</h1>
+  <form role="form">
+  	 <div class="form-group">
+  	  <input type="text" class="form-control" id="email" placeholder="your-email@gmail.com" />
+  	  <input type="button" class="btn btn-success btn-lg" id="verify" value="Verify" />
+  	 </div>
   </form>
 
 </template>

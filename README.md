@@ -20,11 +20,32 @@ meteor add email
 
 #### Send Email Through Gmail SMTP
 
-In your server/server.js file add the following line:
+In your server/server.js file add the following MAIL_URL config line:
 ```javascript
 process.env.MAIL_URL="smtp://xxxxx%40gmail.com:yyyyy@smtp.gmail.com:465/"; 
 ```
 Where xxxxx is your gmail username and yyyyy is your gmail password.
+
+##### Send Your First Email Through Gmail
+
+In your server/server.js file add this email directive
+```
+Email.send({
+  from: "meteor.email.2014@gmail.com",
+  to: "your-personal-email-here@gmail.com",
+  subject: "Meteor Can Send Emails via Gmail",
+  text: "Its pretty easy to send emails via gmail."
+});
+```
+
+You should receive an email within a few seconds:
+
+![Meteor Gmail](http://i.imgur.com/dB6DQyf.png)
+
+As soon as you've confirmed that's working, comment out the Email.send
+code so you don't continuously send yourself test emails each time you
+update your project.
+
 
 
 

@@ -107,16 +107,26 @@ Router.map(function () {
         path: '/verify-email/:token',
         action: 'verifyEmail'
     });
+
+    this.route('verified', {
+        path: '/verified',
+        template: 'verified'
+    });
+
+    this.route('checkemail', {
+        path: '/checkemail',
+        template: 'checkemail'
+    });
 });
 
+// More info: https://github.com/EventedMind/iron-router/issues/3
 AccountController = RouteController.extend({
     verifyEmail: function () {
         Accounts.verifyEmail(this.params.token, function () {
-            Router.go('/');
+            Router.go('/verified');
         });
     }
 });
-// see: https://github.com/EventedMind/iron-router/issues/3
 ```
 
 Now the verification email will be in the form:
@@ -138,12 +148,15 @@ This is what you can see:
 ## Useful Links:
 
 - Meteor sendVerificationEmail Docs: http://docs.meteor.com/#accounts_sendverificationemail
-- sendVerificationEmail needs to be done by the server: http://stackoverflow.com/questions/22124708/sending-verification-email-with-meteor-causing-error
+- sendVerificationEmail needs to be done by the **server** (not in client.js!): http://stackoverflow.com/questions/22124708/sending-verification-email-with-meteor-causing-error
 - Send email using gmail: http://zulfait.blogspot.co.uk/2013/01/meteor-js-send-email-through-gmail.html
 - Send email with SendGrid: http://sendgrid.com/blog/send-email-meteor-sendgrid/
 - Generate custom verification token: http://stackoverflow.com/questions/21753078/generating-a-verification-token-in-meteor-without-sending-an-email
+- Verification fails with IronRouter: http://stackoverflow.com/questions/19112450/meteor-account-email-verify-fails-two-ways/
 - Iron Router verification urls: https://github.com/EventedMind/iron-router/issues/3
-
+- Dynamic email templates: http://stackoverflow.com/questions/17845932/using-dynamic-html-templates-in-meteor
+- Push to Heroku: http://bytesofpi.com/post/20898722298/pushing-your-meteor-project-to-heroku
+- Issues with SSL? http://stackoverflow.com/questions/15254520/meteorjs-email-configuration-ssl
 
 
 Disposable Gmail Account (used for testing):

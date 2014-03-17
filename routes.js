@@ -21,6 +21,7 @@ Router.map(function () {
     });
 });
 
+// More info: https://github.com/EventedMind/iron-router/issues/3
 AccountController = RouteController.extend({
     verifyEmail: function () {
         Accounts.verifyEmail(this.params.token, function () {
@@ -28,4 +29,3 @@ AccountController = RouteController.extend({
         });
     }
 });
-// see: https://github.com/EventedMind/iron-router/issues/3

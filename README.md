@@ -161,4 +161,4 @@ This is what you can see:
 
 Disposable Gmail Account (used for testing):
 - email: meteor.email.2014@gmail.com
-- password: xxxx
+- password: *******

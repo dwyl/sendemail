@@ -5,7 +5,7 @@ Send verification, notification and reminder emails from any Meteor app.
 
 ## Background
 
-As part of registering new users for your *fantastic* Meteor app you 
+As part of registering new users for your *fantastic* Meteor app you
 will need to *verify* their email addresses to ensure that people
 are not signing up with fake emails (or *worse* using someone else's email!)
 
@@ -21,7 +21,7 @@ This tutorial shows you how to do this kind of verification.
 ## Implementation
 
 Meteor has a method for verifying that an email addres is valid: <br />
-**Accounts.sendVerificationEmail(userId, [email])** 
+**Accounts.sendVerificationEmail(userId, [email])**
 but you need to configure email before you can send.
 
 ### Setup Meteor to Send Email
@@ -38,7 +38,7 @@ meteor add email
 
 In your server/server.js file add the following MAIL_URL config line:
 ```javascript
-process.env.MAIL_URL="smtp://xxxxx%40gmail.com:yyyyy@smtp.gmail.com:465/"; 
+process.env.MAIL_URL="smtp://xxxxx%40gmail.com:yyyyy@smtp.gmail.com:465/";
 ```
 Where xxxxx is your gmail username and yyyyy is your gmail password.
 
@@ -58,7 +58,7 @@ You should receive an email within a few seconds:
 
 ![Meteor Gmail](http://i.imgur.com/dB6DQyf.png)
 
-As soon as you've *confirmed* that's *working*, 
+As soon as you've *confirmed* that's *working*,
 ***comment out*** the **Email.send**
 code so you don't continuously send yourself test emails each time you
 update your project.
@@ -73,14 +73,14 @@ meteor add accounts-base
 meteor add accounts-password
 ```
 
-Now you can use the **Accounts.createUser** 
+Now you can use the **Accounts.createUser**
 and **Accounts.sendVerificationEmail** methods.
 
 That will send an email in the form:
 
 ![Meteor verification email](http://i.imgur.com/BpUckrK.png)
 
-The standard Meteor virification link looks like: 
+The standard Meteor virification link looks like:
 http://yoursite.com/#/verify-email/gDSfHxYWuzwRiqmmN
 
 
@@ -135,7 +135,7 @@ Now the verification email will be in the form:
 
 ## Try it!
 
-This is what you can see: 
+This is what you can see:
 
 ![Form prompting for email](http://i.imgur.com/ffcxHQg.png)
 
@@ -162,3 +162,11 @@ This is what you can see:
 Disposable Gmail Account (used for testing):
 - email: meteor.email.2014@gmail.com
 - password: P455w0rd2014
+
+## Note
+
+We have used this successfully in our Meteor Apps but have not
+written automated tests because sending email is part of Meteor's Core
+Functionality. If anyone else wants to write tests and make this into
+an Atmosphere package, we are happy to point this tutorial to your package
+so you get the click throughs!

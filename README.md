@@ -163,10 +163,14 @@ Disposable Gmail Account (used for testing):
 - email: meteor.email.2014@gmail.com
 - password: *******
 
-## Note
+## Notes
 
-We have used this successfully in our Meteor Apps but have not
+1. We have used this successfully in our Meteor Apps but have not
 written automated tests because sending email is part of Meteor's Core
 Functionality. If anyone else wants to write tests and make this into
 an Atmosphere package, we are happy to point this tutorial to your package
 so you get the click throughs!
+
+2. We are not using the *latest* Meteor so have not tried this code with
+meteor 1.0< if you have issues, please add them here on GitHub so others
+can learn. Thanks!

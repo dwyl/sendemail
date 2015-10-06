@@ -24,7 +24,7 @@
   "author": "@nelsonic <contact.nelsonic+hapi-email@gmail.com>",
   "license": "GPL-2.0",
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 0.12"
   },
   "bugs": {
     "url": "https://github.com/nelsonic/hapi-email/issues"

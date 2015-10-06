@@ -44,6 +44,10 @@ Proposed Method Signature:
 sendEmail(template, options, callback);
 ```
 
+### Which Email Service Provider?
+
+Initially we are using ***Mandrill*** for ***dwyl***
+
 
 Meteor has a method for verifying that an email addres is valid: <br />
 **Accounts.sendVerificationEmail(userId, [email])**
@@ -172,7 +176,12 @@ This is what you can see:
 
 ## Useful Links:
 
-+
++ Mandrill Node module code: https://bitbucket.org/mailchimp/mandrill-api-node
+(*sadly*, ***not on GitHub***...)
++ Message send method: https://mandrillapp.com/api/docs/messages.nodejs.html
++ API Key: https://mandrillapp.com/settings/index/
++ Originally implementation:
+https://github.com/dwyl/time/issues/135
 
 ## Notes
 

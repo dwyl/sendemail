@@ -1,17 +1,27 @@
-Meteor Email (Verification)
-============
+# Hapi Email
 
-Send verification, notification and reminder emails from any Meteor app.
+Send ***welcome, verification, notification and reminder emails***
+from *any* Hapi.js app.
 
-## Background
+## Why?
 
-As part of registering new users for your *fantastic* Meteor app you
+While we would *prefer* for *email* to be *retired*
+and replaced by something *better*, the fact remains
+that *most* people still use email as their *primary*
+means of (*digital*) communication.
+
+Given that email is not going away, we need to make
+sending email to people as simple as possible.
+
+## What?
+
+### Verify Email Address
+
+As part of registering new people for your Hapi app you
 will need to *verify* their email addresses to ensure that people
-are not signing up with fake emails (or *worse* using someone else's email!)
+are not signing up with *fake* emails (or *worse* using someone else's email!)
 
 This tutorial shows you how to do this kind of verification.
-
-## Example
 
 ![meteor verify email](http://i.imgur.com/ffcxHQg.png)
 
@@ -147,21 +157,7 @@ This is what you can see:
 
 ## Useful Links:
 
-- Meteor sendVerificationEmail Docs: http://docs.meteor.com/#accounts_sendverificationemail
-- sendVerificationEmail needs to be done by the **server** (not in client.js!): http://stackoverflow.com/questions/22124708/sending-verification-email-with-meteor-causing-error
-- Send email using gmail: http://zulfait.blogspot.co.uk/2013/01/meteor-js-send-email-through-gmail.html
-- Send email with SendGrid: http://sendgrid.com/blog/send-email-meteor-sendgrid/
-- Generate custom verification token: http://stackoverflow.com/questions/21753078/generating-a-verification-token-in-meteor-without-sending-an-email
-- Verification fails with IronRouter: http://stackoverflow.com/questions/19112450/meteor-account-email-verify-fails-two-ways/
-- Iron Router verification urls: https://github.com/EventedMind/iron-router/issues/3
-- Dynamic email templates: http://stackoverflow.com/questions/17845932/using-dynamic-html-templates-in-meteor
-- Push to Heroku: http://bytesofpi.com/post/20898722298/pushing-your-meteor-project-to-heroku
-- Issues with SSL? http://stackoverflow.com/questions/15254520/meteorjs-email-configuration-ssl
-
-
-Disposable Gmail Account (used for testing):
-- email: meteor.email.2014@gmail.com
-- password: *******
++ 
 
 ## Notes
 

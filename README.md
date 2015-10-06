@@ -21,6 +21,10 @@ As part of registering new people for your Hapi app you
 will need to *verify* their email addresses to ensure that people
 are not signing up with *fake* emails (or *worse* using someone else's email!)
 
+### Reminder Email?
+
+
+
 This tutorial shows you how to do this kind of verification.
 
 ![meteor verify email](http://i.imgur.com/ffcxHQg.png)
@@ -28,7 +32,18 @@ This tutorial shows you how to do this kind of verification.
 ***Try it***: http://meteor-email.meteor.com/
 
 
-## Implementation
+## *How*?
+
++ [ ] Can we make this generic?
++ [ ] Use [***Vision***](https://github.com/hapijs/vision)
+to render templates?
+
+Proposed Method Signature:
+
+```js
+sendEmail(template, options, callback);
+```
+
 
 Meteor has a method for verifying that an email addres is valid: <br />
 **Accounts.sendVerificationEmail(userId, [email])**
@@ -157,7 +172,7 @@ This is what you can see:
 
 ## Useful Links:
 
-+ 
++
 
 ## Notes
 

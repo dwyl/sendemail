@@ -1,0 +1,30 @@
+{
+  "name": "hapi-email",
+  "version": "1.0.1",
+  "description": "Send emails from your hapi.js app via Mandrill",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "tape"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nelsonic/hapi-email.git"
+  },
+  "keywords": [
+    "hapi",
+    "email",
+    "verification",
+    "registration",
+    "reset",
+    "welcome",
+    "send",
+    "simple",
+    "template"
+  ],
+  "author": "dwyl",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/nelsonic/hapi-email/issues"
+  },
+  "homepage": "https://github.com/nelsonic/hapi-email#readme"
+}

@@ -5,7 +5,7 @@ from *any* Hapi.js app.
 
 ## Why?
 
-While we would *prefer* for *email* to be *retired*
+While we would *prefer* for *email* to be *phased out*
 and replaced by something *better*, the fact remains
 that *most* people still use email as their *primary*
 means of (*digital*) communication.
@@ -54,7 +54,13 @@ sendEmail(template, options, callback);
 
 ### Which Email Service Provider?
 
-Initially we are using ***Mandrill*** for ***dwyl***
+Initially we are using ***Mandrill*** for ***dwyl***.
+
+If you want to use an alternative mail sender,
+e.g: [sendgrid](http://sendgrid.com/)
+or [amazon ses](https://aws.amazon.com/ses/)  
+please ***tell us***: https://github.com/nelsonic/hapi-email/issues
+(*we are* ***always*** *happy to help*)
 
 
 ## Useful Links:

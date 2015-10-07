@@ -1,6 +1,6 @@
 {
   "name": "hapi-email",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Send emails from your hapi.js app via Mandrill",
   "main": "lib/index.js",
   "scripts": {
@@ -40,6 +40,7 @@
   "devDependencies": {
     "chalk": "^1.1.0",
     "codeclimate-test-reporter": "0.1.0",
+    "decache": "^3.0.3",
     "istanbul": "^0.3.17",
     "jshint": "^2.8.0",
     "pre-commit": "1.1.1",

@@ -1,11 +1,19 @@
-Hi!
+Hi {{name}}!
 
-Thanks so much for joining us to alpha test dwyl, we’re excited to have you!
+Thanks so much for joining us to alpha test dwyl (Do What You Love),
+we’re excited to have you on board!
 
-For now, dwyl will help you track your time and soon it will help you do much more, including making time for what you love. https://github.com/ideaq/start-here/blob/master/manifesto.md
+For now, dwyl will help you track your time
+and soon it will help you do much more,
+including making time for what you love.
+https://github.com/ideaq/start-here/blob/master/manifesto.md
 
-If you have any questions or find any bugs, big or small, please drop us a note or add an issue to github:
-https://github.com/ideaq/time/labels/MVP We really appreciate it!
+If you have any questions or find any issues, big or small,
+please drop us a note or add an issue to github:
+https://github.com/ideaq/time/labels/MVP
+We really appreciate your feedback!
 
 Happy dwyling
 Ines & Nelson
+Co-Founders
+http://www.dwyl.io

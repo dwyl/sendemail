@@ -30,6 +30,17 @@ test(file+" set_template_directory without args throws error!", function(t) {
 });
 
 
+test.only(file+" set_template_directory with invalid directory!", function(t) {
+  try {
+    email.set_template_directory('/invalid');
+  } catch (e) {
+    console.log(e.code);
+    t.ok(e.code === 'ENOENT', 'FS Error: '+JSON.stringify(e))
+    t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
+    t.end();
+  }
+});
+
 // test(file+" Template directory has been set", function(t) {
 //   var email  = require('../lib/index.js'); // WITH api key
 //   email(person, function(eres){

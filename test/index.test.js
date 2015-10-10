@@ -145,7 +145,7 @@ test(file+" Email Successfully Sent ", function(t) {
   // console.log("MANDRILL_APIKEY >>> "+process.env.MANDRILL_APIKEY)
   decache('../lib/index.js'); // clear cached email module
   var email  = require('../lib/index.js'); // WITH api key
-  email('hello.html', person, function(error, result){
+  email('welcome.html', person, function(error, result){
     console.log(' - - - - - - - - - - - - - - - - - - - ')
     console.log(result);
     console.log(' - - - - - - - - - - - - - - - - - - - ')

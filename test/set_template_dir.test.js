@@ -2,6 +2,7 @@ var config  = require('path').resolve(__dirname+'/../config.env');
 console.log(' >>>>>>>>>>>>>> ' + config);
 var env     = require('env2')(config);
 console.log(process.env.TEMPLATE_DIRECTORY)
+var path    = require('path');
 var test    = require('tape');
 var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '');
@@ -52,18 +53,48 @@ test(file+" set_template_directory with VALID (but empty) directory!", function(
 });
 
 test(file+" set_template_directory with VALID directory with teplates!", function(t) {
-  // try {
+  var dir = __dirname + '/../examples/templates'; // unresolved
+  email.set_template_directory(__dirname + '/../examples/templates');
+  var path = require('path');
+  dir = path.resolve(dir);
+  t.equal(process.env.TEMPLATE_DIRECTORY, dir, "Template Dir Set: "+ dir);
+  t.end();
+});
+
+
+test(file+" attempt to compile non-existent template (fail!)", function(t) {
+  try {
     var dir = __dirname + '/../examples/templates'; // unresolved
-    email.set_template_directory(__dirname + '/../examples/templates');
-    var path = require('path');
     dir = path.resolve(dir);
-    t.equal(process.env.TEMPLATE_DIRECTORY, dir, "Template Dir Set: "+ dir);
+    email.set_template_directory(dir); // set template dir
+    email.compile_template('/no-file.html');
+  } catch (e) {
+    // console.log(e);
+    t.ok(e.code === 'ENOENT', 'FS Error: '+JSON.stringify(e))
     t.end();
-  // } catch (e) {
-  //   t.ok(e.indexOf("No Files in") > -1, 'Error: '+e);
-  //   t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
-  //   t.end();
-  // }
+  }
+});
+
+var Handlebars = require('handlebars');
+
+test(file+" compile a known template", function(t) {
+  var dir = __dirname + '/../examples/templates'; // unresolved
+  dir = path.resolve(dir);
+  email.set_template_directory(dir); // set template dir
+  var c = email.compile_template('/hello.html');
+  var result = c({name:'Jimmy'});
+  t.ok(result.indexOf("<p>Hello Jimmy!</p>") > -1, 'Rendered: '+result);
+  t.end()
+});
+
+test(file+" compile THE SAME template from cache", function(t) {
+  var dir = __dirname + '/../examples/templates'; // unresolved
+  dir = path.resolve(dir);
+  email.set_template_directory(dir); // set template dir
+  var c = email.compile_template('/hello.html');
+  var result = c({name:'Jenny'});
+  t.ok(result.indexOf("<p>Hello Jenny!</p>") > -1, 'Rendered: '+result);
+  t.end()
 });
 
 // test(file+" Template directory has been set", function(t) {

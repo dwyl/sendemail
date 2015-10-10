@@ -44,13 +44,26 @@ test(file+" set_template_directory with INVALID directory!", function(t) {
 test(file+" set_template_directory with VALID (but empty) directory!", function(t) {
   try {
     email.set_template_directory(__dirname + '/empty');
-    t.end()
   } catch (e) {
-    console.log(e.code);
     t.ok(e.indexOf("No Files in") > -1, 'Error: '+e);
     t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
     t.end();
   }
+});
+
+test(file+" set_template_directory with VALID directory with teplates!", function(t) {
+  // try {
+    var dir = __dirname + '/../examples/templates'; // unresolved
+    email.set_template_directory(__dirname + '/../examples/templates');
+    var path = require('path');
+    dir = path.resolve(dir);
+    t.equal(process.env.TEMPLATE_DIRECTORY, dir, "Template Dir Set: "+ dir);
+    t.end();
+  // } catch (e) {
+  //   t.ok(e.indexOf("No Files in") > -1, 'Error: '+e);
+  //   t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
+  //   t.end();
+  // }
 });
 
 // test(file+" Template directory has been set", function(t) {

@@ -24,6 +24,18 @@ so everyone can get on with their lives.
 
 ## *How*?
 
+### Checklist:
++ [ ] install the `hapi-email` module from NPM
++ [ ] get a Mandril API Key
++ [ ] set your `MANDRILL_APIKEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
++ [ ] If you don't already have a /**templates** directory in your
+project create one!
++ [ ] create a pair of email templates in your /**templates** directory
+one called `hello.txt` the other `hello.html`
++ [ ] borrow the code for `hello.txt` and `hello.html` from the **/examples/templates** directory of this project!
++ [ ] create a test file called `email.js` and paste some sample
+code in it.
+
 ### 1. Install `hapi-email` from NPM
 
 ```sh
@@ -51,7 +63,6 @@ which one so we can add support.
 ### 3. Create your *Template(s)*
 
 Create *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
-
 
 
 #### *Question*: Should we create *text-only* templates?
@@ -87,6 +98,11 @@ sendEmail(template, options, callback);
 ```
 
 #### Simple Example:
+
+> Set the template directory
+```sh
+email.setTemplateDir(__dirname + '/path/to/templates/')
+```
 
 
 

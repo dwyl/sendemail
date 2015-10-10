@@ -65,23 +65,10 @@ which one so we can add support.
 Create *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
 
 
-#### *Question*: Should we create *text-only* templates?
-
+>***Question***: Should we create *text-only* templates?  
 ***Quick*** **Answer**: ***Yes***.  
-In our *experience*, *while* most *modern* email clients
-(Gmail, Apple/iOS Mail, Yahoo! Mail, Outlook)  
-have `HTML` email ***enabled by default***,
-*often* the people who *prefer* ***text-only***
-(e.g: people with Blackberry phones,
-***visual/physical impairment*** or *company* email
-email systems - *with aggressive filtering*)
-are "***higher value***" customers. Also,
-possibly *more importantly* (*depending on who is using your product/service*) you can have *technical privacy-concious* people
-that ***only*** read `.txt` email to avoid sending
-and tracking data ... but, if you're building a tool for
-non-technical people, focus on the fact that `.txt` email
-is more ***accessible*** and prevents your messages getting
-blocked by spam filters.
+> For ***Expanded Answer***, see: ***Plain Text Templates?*** section in **Notes** (*below*).
+
 
 
 
@@ -134,6 +121,10 @@ set a new password as quickly & securely as possible.
 
 Remind people they signed up but have not *used* the product/service?
 
+### *Notification* Email?
+
+> Sam liked your post/photo/update ...
+social validation that your life has meaning!
 
 ## *Notes*?
 
@@ -149,13 +140,39 @@ please ***tell us***: https://github.com/nelsonic/hapi-email/issues
 
 ### Which View/Template Libaray?
 
-For *simplicity* we are using ***Handlebars***,
-handlebars is tried and tested and while it does not attempt
+For *simplicity* we are using
+[***Handlebars***](http://handlebarsjs.com/),
+handlebars is ***tried and tested*** and while it does not attempt
 to do anything *fancy* ("*VirtualDOM*"), it does allow
 you to do sophisticated templates with includes and iterators
 and supports compilation so its ***fast***
-(*fast enough ... how many millions of emails are you sending per day...?*)
+(*fast enough ... how many millions of emails are you sending per day...?*)  
+Yes... [*mustache*](https://github.com/janl/mustache.js/) is "*faster*"
+than handlebars ... but in our *experience* having *conditionals*
+(*i.e. "logic"*) is ***very useful*** for reducing the *number* of required templates while not (*significantly*) increasing complexity.
+we don't think `if` statements in views are a "*crime*" ... ***do you***...?
 
+> If anyone feels *strongly* about switching to an *alternative*
+template engine, please raise an issue:
+https://github.com/nelsonic/hapi-email/issues  
+(*please give clear reasons, i.e.* ***not*** *"react-ify-licious-heah because its* ***so cool*** ... ")
+
+### *Plain Text*  Templates?
+
+In our *experience*, *while* most *modern* email clients
+(Gmail, Apple/iOS Mail, Yahoo! Mail, Outlook)  
+have `HTML` email ***enabled by default***,
+*often* the people who *prefer* ***text-only***
+(e.g: people with Blackberry phones,
+***visual/physical impairment*** or *company* email
+email systems - *with aggressive filtering*)
+are "***higher value***" customers. Also,
+possibly *more importantly* (*depending on who is using your product/service*) you can have *technical privacy-concious* people
+that ***only*** read `.txt` email to avoid sending
+and tracking data ... but, if you're building a tool for
+non-technical people, focus on the fact that `.txt` email
+is more ***accessible*** and prevents your messages getting
+blocked by spam filters.
 
 
 ## Useful Links:

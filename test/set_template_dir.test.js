@@ -88,9 +88,6 @@ test(file+" compile a known template", function(t) {
 });
 
 test(file+" compile THE SAME template from cache", function(t) {
-  var dir = __dirname + '/../examples/templates'; // unresolved
-  dir = path.resolve(dir);
-  email.set_template_directory(dir); // set template dir
   var c = email.compile_template('/hello.html');
   var result = c({name:'Jenny'});
   t.ok(result.indexOf("<p>Hello Jenny!</p>") > -1, 'Rendered: '+result);

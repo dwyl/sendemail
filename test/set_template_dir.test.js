@@ -87,10 +87,17 @@ test(file+" compile a known template", function(t) {
   t.end()
 });
 
-test(file+" compile THE SAME template from cache", function(t) {
+test(file+" compile .html template from cache", function(t) {
   var c = email.compile_template('/hello.html');
   var result = c({name:'Jenny'});
   t.ok(result.indexOf("<p>Hello Jenny!</p>") > -1, 'Rendered: '+result);
+  t.end()
+});
+
+test(file+" compile .txt template", function(t) {
+  var c = email.compile_template('/hello.txt');
+  var result = c({name:'Jenny'});
+  t.ok(result.indexOf("Hello Jenny!") > -1, 'Rendered: '+result);
   t.end()
 });
 

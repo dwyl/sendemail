@@ -26,8 +26,8 @@ so everyone can get on with their lives.
 
 ### Checklist:
 + [ ] install the `hapi-email` module from NPM
-+ [ ] get a Mandril API Key
-+ [ ] set your `MANDRILL_APIKEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
++ [ ] create/get a Mandril API Key
++ [ ] set your `MANDRILL_API_KEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
 + [ ] If you don't already have a /**templates** directory in your
 project create one!
 + [ ] create a pair of email templates in your /**templates** directory
@@ -99,7 +99,8 @@ sendEmail(template, options, callback);
 
 #### Simple Example:
 
-> Set the template directory
+> Set the template directory for your project:
+
 ```sh
 email.setTemplateDir(__dirname + '/path/to/templates/')
 ```

@@ -7,8 +7,8 @@ var decache = require('decache');
 
 // decache('../lib/index.js'); // clear cached email module
 // console.log("MANDRILL_APIKEY >>> "+process.env.MANDRILL_APIKEY)
-var APIKEY = process.env.MANDRILL_APIKEY; // store for later
-process.env.MANDRILL_APIKEY = null; // delete key to force fail
+var APIKEY = process.env.MANDRILL_API_KEY; // store for later
+process.env.MANDRILL_API_KEY = null; // delete key to force fail
 var email  = require('../lib/index.js'); // no api key
 
 test(file+" Force Fail in Email", function(t) {
@@ -19,7 +19,7 @@ test(file+" Force Fail in Email", function(t) {
   email(person, function(email_response) {
     console.log(email_response);
     t.equal(email_response.status, 'error', "Invalid Mandrill Key");
-    process.env.MANDRILL_APIKEY = APIKEY; // restore key for next tests
+    process.env.MANDRILL_API_KEY = APIKEY; // restore key for next tests
     t.end();
   })
 });

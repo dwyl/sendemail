@@ -4,29 +4,24 @@ var test    = require('tape');
 var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '');
 var decache = require('decache');
-
-// decache('../lib/index.js'); // clear cached email module
-// console.log("MANDRILL_APIKEY >>> "+process.env.MANDRILL_APIKEY)
-var APIKEY_COPY = process.env.MANDRILL_API_KEY; // store for later
-process.env.MANDRILL_API_KEY = null; // delete key to force fail
+decache('../lib/index.js'); // clear cached so its fresh
 var email   = require('../lib/index.js'); // no api key
 
-test(file+" Force Fail in Email", function(t) {
+
+test(file+" Template Dir has not yet been set!", function(t) {
   var person = {
     "email"    : 'bad@example.com',
     "password" : "thiswill400"
   };
   email(person, function(email_response) {
     console.log(email_response);
-    t.equal(email_response.status, 'error', "Invalid Mandrill Key");
-    process.env.MANDRILL_API_KEY = APIKEY_COPY; // restore key for next tests
+    t.equal(email_response.status, 'error', "Error...");
+    // process.env.MANDRILL_API_KEY = APIKEY_COPY; // restore key for next tests
     t.end();
   })
 });
 
-
-// now make it pass
-test(file+" Email Successfully Sent ", function(t) {
+test(file+" Template directory has been set", function(t) {
   var person = {
     "email"    : 'dwyl.test+email_welcome' +Math.random()+'@gmail.com',
     "password" : "NotRequiredToTestEmail!"

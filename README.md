@@ -33,7 +33,7 @@ project create one!
 + [ ] create a pair of email templates in your /**templates** directory
 one called `hello.txt` the other `hello.html`
 + [ ] borrow the code for `hello.txt` and `hello.html` from the **/examples/templates** directory of this project!
-+ [ ] create a test file called `email.js` and paste some sample
++ [ ] create a file called `email.js` and paste some sample
 code in it.
 
 ### 1. Install `hapi-email` from NPM

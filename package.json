@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nelsonic/hapi-email.git"
+    "url": "git+https://github.com/nelsonic/sendemail.git"
   },
   "keywords": [
     "hapi",
@@ -25,27 +25,25 @@
     "simple",
     "template"
   ],
-  "author": "@nelsonic <contact.nelsonic+hapi-email@gmail.com>",
+  "author": "@nelsonic <contact.nelsonic+sendemail@gmail.com>",
   "license": "GPL-2.0",
   "engines": {
     "node": ">= 0.12"
   },
   "bugs": {
-    "url": "https://github.com/nelsonic/hapi-email/issues"
+    "url": "https://github.com/nelsonic/sendemail/issues"
   },
-  "homepage": "https://github.com/nelsonic/hapi-email#readme",
+  "homepage": "https://github.com/nelsonic/sendemail#readme",
   "directories": {
     "test": "test"
   },
   "devDependencies": {
-    "chalk": "^1.1.0",
-    "codeclimate-test-reporter": "0.1.0",
     "decache": "^3.0.3",
-    "env2": "^2.0.2",
-    "istanbul": "^0.3.17",
+    "env2": "^2.0.4",
+    "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
-    "pre-commit": "1.1.1",
-    "tape": "^4.0.2"
+    "pre-commit": "1.1.2",
+    "tape": "^4.2.2"
   },
   "pre-commit": [
     "jshint",

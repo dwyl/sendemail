@@ -1,5 +1,10 @@
 # SendEmail
 
+[![Build Status](https://travis-ci.org/nelsonic/sendemail.svg?branch=tidyup)](https://travis-ci.org/nelsonic/sendemail)
+[![codecov.io](https://codecov.io/github/nelsonic/sendemail/coverage.svg?branch=master)](https://codecov.io/github/nelsonic/sendemail?branch=master)
+[![Dependency Status](https://david-dm.org/nelsonic/sendemail.svg)](https://david-dm.org/nelsonic/sendemail)
+[![devDependency Status](https://david-dm.org/nelsonic/sendemail/dev-status.svg)](https://david-dm.org/nelsonic/sendemail#info=devDependencies)
+
 Send ***welcome, verification, password reset, update and reminder emails***
 from *any* node.js app.
 

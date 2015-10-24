@@ -1,6 +1,6 @@
 {
   "name": "sendemail",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Send emails from your node.js app via Mandrill",
   "main": "lib/index.js",
   "scripts": {

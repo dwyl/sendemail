@@ -1,6 +1,6 @@
 {
   "name": "hapi-email",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Send emails from your hapi.js app via Mandrill",
   "main": "lib/index.js",
   "scripts": {
@@ -54,6 +54,7 @@
   ],
   "dependencies": {
     "handlebars": "^4.0.3",
-    "mandrill-api": "^1.0.45"
+    "mandrill-api": "^1.0.45",
+    "riot": "^2.2.4"
   }
 }

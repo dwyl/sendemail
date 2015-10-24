@@ -1,6 +1,6 @@
 {
   "name": "hapi-email",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Send emails from your hapi.js app via Mandrill",
   "main": "lib/index.js",
   "scripts": {

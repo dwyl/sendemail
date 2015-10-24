@@ -1,7 +1,7 @@
 # Hapi Email
 
-Send ***welcome, verification, password reset, notification and reminder emails***
-from *any* Hapi.js app.
+Send ***welcome, verification, password reset, update and reminder emails***
+from *any* node.js app.
 
 
 ## Why?
@@ -21,6 +21,25 @@ sending email to people as ***simple and reliable*** as possible.
 *Reliably* ***Send*** *beautiful* **email** with ***dependable delivery***.  
 When email that *has* to get through as quickly as possible
 so everyone can get on with their lives.
+
+In producing this module (*for our own use*) we have made a few
+of technical decisions (*for pragmatic reasons*) these are:
+
+1. use [***environment variables***](https://github.com/dwyl/learn-environment-variables)
+for storing sensitive information (*API Keys*)
+and projects-specific configuration (*Template Directory*)
+2. use ***Mandrill*** for *reliably* sending email messages because it has
+good documentation, excellent "*deliverability*" and includes a few thousand
+***free*** emails per month (*with all the benefits of their paid plans!*)
+3. use ***Handlebars*** for email template rendering. Handlebars is very
+easy to use and allows us to send ***beautiful*** **HTML** emails without
+the complexity or learning curve of many other view libraries.
+
+> **Note**: if you prefer to use a different Email Service provider or template/view
+library for your project,
+[***please let us know***](https://github.com/nelsonic/hapi-email/issues)!
+We are happy to support alternatives to make this project more useful to
+others people with *specific needs*.
 
 ## *How*?
 
@@ -58,7 +77,7 @@ if you get stuck, *we are here to help*: [![Join the chat at https://gitter.im/{
 
 > Note: If you prefer to use a *different* email sending provider,  
 please [***let us know***](https://github.com/nelsonic/hapi-email/issues)
-which one so we can add support.
+which provider you prefer so we can add support.
 
 ### 3. Create your *Template(s)*
 

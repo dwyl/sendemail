@@ -44,6 +44,7 @@ test(file+" set_template_directory with INVALID directory!", function(t) {
 
 test(file+" set_template_directory with VALID (but empty) directory!", function(t) {
   try {
+    delete process.env.TEMPLATE_DIRECTORY;
     email.set_template_directory(__dirname + '/empty');
   } catch (e) {
     console.log(' - - - - - - - - - - - - - - - - - - ')

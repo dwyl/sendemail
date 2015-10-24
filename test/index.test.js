@@ -42,19 +42,19 @@ test(file+" set_template_directory with INVALID directory!", function(t) {
   }
 });
 
-test(file+" set_template_directory with VALID (but empty) directory!", function(t) {
-  try {
-    delete process.env.TEMPLATE_DIRECTORY;
-    email.set_template_directory(__dirname + '/empty');
-  } catch (e) {
-    console.log(' - - - - - - - - - - - - - - - - - - ')
-    console.log(e);
-    console.log(' - - - - - - - - - - - - - - - - - - ')
-    // t.ok(e, 'Error: '+e);
-    t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
-    t.end();
-  }
-});
+// test(file+" set_template_directory with VALID (but empty) directory!", function(t) {
+//   try {
+//     delete process.env.TEMPLATE_DIRECTORY;
+//     email.set_template_directory(__dirname + '/empty');
+//   } catch (e) {
+//     console.log(' - - - - - - - - - - - - - - - - - - ')
+//     console.log(e);
+//     console.log(' - - - - - - - - - - - - - - - - - - ')
+//     // t.ok(e, 'Error: '+e);
+//     t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
+//     t.end();
+//   }
+// });
 
 test(file+" set_template_directory with VALID directory with teplates!", function(t) {
   var dir = __dirname + '/../examples/templates'; // unresolved

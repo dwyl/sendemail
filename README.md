@@ -1,4 +1,4 @@
-# Hapi Email
+# SendEmail
 
 Send ***welcome, verification, password reset, update and reminder emails***
 from *any* node.js app.
@@ -22,6 +22,8 @@ sending email to people as ***simple and reliable*** as possible.
 When email that *has* to get through as quickly as possible
 so everyone can get on with their lives.
 
+### Decisions We Made (*to Get Started as Fast as Possible*)
+
 In producing this module (*for our own use*) we have made a few
 of technical decisions (*for pragmatic reasons*) these are:
 
@@ -36,10 +38,11 @@ easy to use and allows us to send ***beautiful*** **HTML** emails without
 the complexity or learning curve of many other view libraries.
 
 > **Note**: if you prefer to use a different Email Service provider or template/view
-library for your project,
+library for your project,  
 [***please let us know***](https://github.com/nelsonic/hapi-email/issues)!
-We are happy to support alternatives to make this project more useful to
-others people with *specific needs*.
+We are happy to support alternatives to make this project more
+*useful* to other  
+people with *specific needs*.
 
 ## *How*?
 

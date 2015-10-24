@@ -46,6 +46,9 @@ test(file+" set_template_directory with VALID (but empty) directory!", function(
   try {
     email.set_template_directory(__dirname + '/empty');
   } catch (e) {
+    console.log(' - - - - - - - - - - - - - - - - - - ')
+    console.log(e);
+    console.log(' - - - - - - - - - - - - - - - - - - ')
     t.ok(e.indexOf("No Files in") > -1, 'Error: '+e);
     t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
     t.end();

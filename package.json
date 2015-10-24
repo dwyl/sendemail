@@ -1,7 +1,7 @@
 {
-  "name": "hapi-email",
+  "name": "sendemail",
   "version": "1.0.4",
-  "description": "Send emails from your hapi.js app via Mandrill",
+  "description": "Send emails from your node.js app via Mandrill",
   "main": "lib/index.js",
   "scripts": {
     "quick": "./node_modules/tape/bin/tape ./test/*.js",

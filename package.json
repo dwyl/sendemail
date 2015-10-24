@@ -1,0 +1,59 @@
+{
+  "name": "hapi-email",
+  "version": "1.0.2",
+  "description": "Send emails from your hapi.js app via Mandrill",
+  "main": "lib/index.js",
+  "scripts": {
+    "quick": "./node_modules/tape/bin/tape ./test/*.js",
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.js",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "jshint": "./node_modules/jshint/bin/jshint -c .jshintrc --exclude-path .gitignore .",
+    "codeclimate": "CODECLIMATE_REPO_TOKEN=120a783703e4e63069dc63787b87900c306cc977b0f62d942b058bcbb9dd274c ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nelsonic/hapi-email.git"
+  },
+  "keywords": [
+    "hapi",
+    "email",
+    "verification",
+    "registration",
+    "reset",
+    "welcome",
+    "send",
+    "simple",
+    "template"
+  ],
+  "author": "@nelsonic <contact.nelsonic+hapi-email@gmail.com>",
+  "license": "GPL-2.0",
+  "engines": {
+    "node": ">= 0.12"
+  },
+  "bugs": {
+    "url": "https://github.com/nelsonic/hapi-email/issues"
+  },
+  "homepage": "https://github.com/nelsonic/hapi-email#readme",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "chalk": "^1.1.0",
+    "codeclimate-test-reporter": "0.1.0",
+    "decache": "^3.0.3",
+    "env2": "^2.0.2",
+    "istanbul": "^0.3.17",
+    "jshint": "^2.8.0",
+    "pre-commit": "1.1.1",
+    "tape": "^4.0.2"
+  },
+  "pre-commit": [
+    "jshint",
+    "coverage",
+    "codeclimate"
+  ],
+  "dependencies": {
+    "handlebars": "^4.0.3",
+    "mandrill-api": "^1.0.45"
+  }
+}

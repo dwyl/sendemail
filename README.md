@@ -1,176 +1,205 @@
-Meteor Email (Verification)
-============
+# Hapi Email
 
-Send verification, notification and reminder emails from any Meteor app.
+Send ***welcome, verification, password reset, notification and reminder emails***
+from *any* Hapi.js app.
 
-## Background
 
-As part of registering new users for your *fantastic* Meteor app you
+## Why?
+
+While we would *prefer* for *email* to be *phased out*
+and replaced by something *better*, the fact remains
+that *most* people still use email as their *primary*
+means of (*digital*) communication.
+
+![dilbert-email](http://jointeffortmarketing.com/wp-content/uploads/2013/10/dilbert-email.png)
+
+Given that email is not going away, we need to make
+sending email to people as ***simple and reliable*** as possible.
+
+## What?
+
+*Reliably* ***Send*** *beautiful* **email** with ***dependable delivery***.  
+When email that *has* to get through as quickly as possible
+so everyone can get on with their lives.
+
+## *How*?
+
+### Checklist:
++ [ ] install the `hapi-email` module from NPM
++ [ ] create/get a Mandril API Key
++ [ ] set your `MANDRILL_API_KEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
++ [ ] If you don't already have a /**templates** directory in your
+project create one!
++ [ ] create a pair of email templates in your /**templates** directory
+one called `hello.txt` the other `hello.html`
++ [ ] borrow the code for `hello.txt` and `hello.html` from the **/examples/templates** directory of this project!
++ [ ] create a file called `email.js` and paste some sample
+code in it.
+
+### 1. Install `hapi-email` from NPM
+
+```sh
+npm install hapi-email --save
+```
+
+### 2. Mandril API Key *Environment Variable*
+
+`hapi-email` requires you set an environment variable to
+*securely* store your Mandril API Key.
+
+> If you are ***new*** to ***environment variables***, we have a   
+> ***quick introduction***: https://github.com/dwyl/learn-environment-variables
+
+#### Get a Mandril Account and Create an API Key
+
+If you have not already registered for Mandrill,
+get started: https://www.mandrill.com/signup/  
+if you get stuck, *we are here to help*: [![Join the chat at https://gitter.im/{ORG-or-USERNAME}/{REPO-NAME}](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+> Note: If you prefer to use a *different* email sending provider,  
+please [***let us know***](https://github.com/nelsonic/hapi-email/issues)
+which one so we can add support.
+
+### 3. Create your *Template(s)*
+
+Create *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
+
+
+>***Question***: Should we create *text-only* templates?  
+***Quick*** **Answer**: ***Yes***.  
+> For ***Expanded Answer***, see: ***Plain Text Templates?*** section in **Notes** (*below*).
+
+
+
+
+If you are stuck, have a look at **/examples/templates**.
+
+
+
+### 4. *Send* the Email!
+
+Proposed Method Signature:
+
+```js
+sendEmail(template, options, callback);
+```
+
+#### Simple Example:
+
+> Set the template directory for your project:
+
+```sh
+email.setTemplateDir(__dirname + '/path/to/templates/')
+```
+
+
+
+
+## Want *Examples*?
+
+There are *many* situations where you want to send people email.
+
+### *Welcome* Email!
+
+A simple "hello & welcome to our community" email
+you send to people when they register to learn more about
+your product/service.
+
+
+### *Verify* Email Address
+
+As part of registering new people for your Hapi app you
 will need to *verify* their email addresses to ensure that people
-are not signing up with fake emails (or *worse* using someone else's email!)
+are not signing up with *fake* emails (or *worse* using someone else's email!)
 
-This tutorial shows you how to do this kind of verification.
+### *Set a New Password*
 
-## Example
+People forget passwords, we need to help them
+set a new password as quickly & securely as possible.
 
-![meteor verify email](http://i.imgur.com/ffcxHQg.png)
+### *Reminder* Email?
 
-***Try it***: http://meteor-email.meteor.com/
+Remind people they signed up but have not *used* the product/service?
 
+### *Notification* Email?
 
-## Implementation
+> Sam liked your post/photo/update ...
+social validation that your life has meaning!
 
-Meteor has a method for verifying that an email addres is valid: <br />
-**Accounts.sendVerificationEmail(userId, [email])**
-but you need to configure email before you can send.
+## *Notes*?
 
-### Setup Meteor to Send Email
+### Which Email Service Provider?
 
-#### Enable the Email Module
+We are *currently* using ***Mandrill*** for ***dwyl***.
 
-In your terminal/console run:
+If you want to use an alternative mail sender,
+e.g: [sendgrid](http://sendgrid.com/)
+or [amazon ses](https://aws.amazon.com/ses/)  
+please ***tell us***: https://github.com/nelsonic/hapi-email/issues
+(*we are* ***always*** *happy to help*)
 
-```
-meteor add email
-```
+### Which View/Template Libaray?
 
-#### Send Email Through Gmail SMTP
+For *simplicity* we are using
+[***Handlebars***](http://handlebarsjs.com/),
+handlebars is ***tried and tested*** and while it does not attempt
+to do anything *fancy* ("*VirtualDOM*"), it does allow
+you to do sophisticated templates with includes and iterators
+and supports compilation so its ***fast***
+(*fast enough ... how many millions of emails are you sending per day...?*)  
+Yes... [*mustache*](https://github.com/janl/mustache.js/) is "*faster*"
+than handlebars ... but in our *experience* having *conditionals*
+(*i.e. "logic"*) is ***very useful*** for reducing the *number* of required templates while not (*significantly*) increasing complexity.
+we don't think `if` statements in views are a "*crime*" ... ***do you***...?
 
-In your server/server.js file add the following MAIL_URL config line:
-```javascript
-process.env.MAIL_URL="smtp://xxxxx%40gmail.com:yyyyy@smtp.gmail.com:465/";
-```
-Where xxxxx is your gmail username and yyyyy is your gmail password.
+> If anyone feels *strongly* about switching to an *alternative*
+template engine, please raise an issue:
+https://github.com/nelsonic/hapi-email/issues  
+(*please give clear reasons, i.e.* ***not*** *"react-ify-licious-heah because its* ***so cool*** ... ")
 
-##### Send Your First Email Through Gmail
+### *Plain Text*  Templates?
 
-In your server/server.js file add this email directive
-```
-Email.send({
-  from: "meteor.email.2014@gmail.com",
-  to: "your-personal-email-here@gmail.com",
-  subject: "Meteor Can Send Emails via Gmail",
-  text: "Its pretty easy to send emails via gmail."
-});
-```
+In our *experience*, *while* most *modern* email clients
+(Gmail, Apple/iOS Mail, Yahoo! Mail, Outlook)  
+have `HTML` email ***enabled by default***,
+*often* the people who *prefer* ***text-only***
+(e.g: people with Blackberry phones,
+***visual/physical impairment*** or *company* email
+email systems - *with aggressive filtering*)
+are "***higher value***" customers. Also,
+possibly *more importantly* (*depending on who is using your product/service*) you can have *technical privacy-concious* people
+that ***only*** read `.txt` email to avoid sending
+and tracking data ... but, if you're building a tool for
+non-technical people, focus on the fact that `.txt` email
+is more ***accessible*** and prevents your messages getting
+blocked by spam filters.
 
-You should receive an email within a few seconds:
-
-![Meteor Gmail](http://i.imgur.com/dB6DQyf.png)
-
-As soon as you've *confirmed* that's *working*,
-***comment out*** the **Email.send**
-code so you don't continuously send yourself test emails each time you
-update your project.
-
-
-### Enable Meteor Accounts
-
-Enable the simplest type of user account (email and password)
-
-```
-meteor add accounts-base
-meteor add accounts-password
-```
-
-Now you can use the **Accounts.createUser**
-and **Accounts.sendVerificationEmail** methods.
-
-That will send an email in the form:
-
-![Meteor verification email](http://i.imgur.com/BpUckrK.png)
-
-The standard Meteor virification link looks like:
-http://yoursite.com/#/verify-email/gDSfHxYWuzwRiqmmN
-
-
-### Add Iron Router
-
-Add the [Iron Router](https://github.com/EventedMind/iron-router) package
-(requires [meteorite](https://github.com/oortcloud/meteorite))
-
-```
-mrt add iron-router
-```
-
-Iron router **routes.js** with controller function for handling verification.
-
-```javascript
-Router.map(function () {
-    this.route('/', {
-        path: '/',
-        template: 'verifyemail',
-    });
-
-    this.route('verifyEmail', {
-        controller: 'AccountController',
-        path: '/verify-email/:token',
-        action: 'verifyEmail'
-    });
-
-    this.route('verified', {
-        path: '/verified',
-        template: 'verified'
-    });
-
-    this.route('checkemail', {
-        path: '/checkemail',
-        template: 'checkemail'
-    });
-});
-
-// More info: https://github.com/EventedMind/iron-router/issues/3
-AccountController = RouteController.extend({
-    verifyEmail: function () {
-        Accounts.verifyEmail(this.params.token, function () {
-            Router.go('/verified');
-        });
-    }
-});
-```
-
-Now the verification email will be in the form:
-
-![Iron router verification email](http://i.imgur.com/0ZVIOWl.png)
-
-## Try it!
-
-This is what you can see:
-
-![Form prompting for email](http://i.imgur.com/ffcxHQg.png)
-
-![Verification Email Sent](http://i.imgur.com/NRNP7ch.png)
-
-![Verification link in email](http://i.imgur.com/UZmQKUO.png)
-
-![Verified](http://i.imgur.com/Xr9qcag.png)
 
 ## Useful Links:
 
-- Meteor sendVerificationEmail Docs: http://docs.meteor.com/#accounts_sendverificationemail
-- sendVerificationEmail needs to be done by the **server** (not in client.js!): http://stackoverflow.com/questions/22124708/sending-verification-email-with-meteor-causing-error
-- Send email using gmail: http://zulfait.blogspot.co.uk/2013/01/meteor-js-send-email-through-gmail.html
-- Send email with SendGrid: http://sendgrid.com/blog/send-email-meteor-sendgrid/
-- Generate custom verification token: http://stackoverflow.com/questions/21753078/generating-a-verification-token-in-meteor-without-sending-an-email
-- Verification fails with IronRouter: http://stackoverflow.com/questions/19112450/meteor-account-email-verify-fails-two-ways/
-- Iron Router verification urls: https://github.com/EventedMind/iron-router/issues/3
-- Dynamic email templates: http://stackoverflow.com/questions/17845932/using-dynamic-html-templates-in-meteor
-- Push to Heroku: http://bytesofpi.com/post/20898722298/pushing-your-meteor-project-to-heroku
-- Issues with SSL? http://stackoverflow.com/questions/15254520/meteorjs-email-configuration-ssl
+### Background Reading
 
++ Designing for the inbox:
+https://www.campaignmonitor.com/dev-resources/guides/design/  
+(*plenty of detail & highly informative*)
++ Who Cares About Plain Text [email]?
+https://blog.aweber.com/email-deliverability/who-cares-about-plain-text.htm
++ Can Email Be Responsive? http://alistapart.com/article/can-email-be-responsive
++ Coding your emails (*What’s so hard about HTML emails?*):
+https://www.campaignmonitor.com/dev-resources/guides/coding/
++ Best Practices for Plain Text Emails and Why They’re Important:
+https://litmus.com/blog/best-practices-for-plain-text-emails-a-look-at-why-theyre-important
 
-Disposable Gmail Account (used for testing):
-- email: meteor.email.2014@gmail.com
-- password: *******
+### Stats/Trends
 
-## Notes
++ Email Client Stats: https://emailclientmarketshare.com/
++ Email Adoption: https://en.wikipedia.org/wiki/HTML_email#Adoption
 
-1. We have used this successfully in our Meteor Apps but have not
-written automated tests because sending email is part of Meteor's Core
-Functionality. If anyone else wants to write tests and make this into
-an Atmosphere package, we are happy to point this tutorial to your package
-so you get the click throughs!
+### Technical Detail
 
-2. We are not using the *latest* Meteor so have not tried this code with
-meteor 1.0< if you have issues, please add them here on GitHub so others
-can learn. Thanks!
++ Mandrill Node module code: https://bitbucket.org/mailchimp/mandrill-api-node
+(*sadly*, ***not on GitHub***...)
++ Message send method: https://mandrillapp.com/api/docs/messages.nodejs.html
++ API Key: https://mandrillapp.com/settings/index/
++ Original implementation (*tightly-coupled in our "Alpha"*):
+https://github.com/dwyl/time/issues/135

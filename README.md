@@ -6,6 +6,10 @@
 [![Dependency Status](https://david-dm.org/nelsonic/sendemail.svg)](https://david-dm.org/nelsonic/sendemail)
 [![devDependency Status](https://david-dm.org/nelsonic/sendemail/dev-status.svg)](https://david-dm.org/nelsonic/sendemail#info=devDependencies)
 
+[![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat "Node.js 0.12 and 4.x latest both supported")](http://nodejs.org/download/)
+[![npm](https://img.shields.io/npm/v/sendemail.svg)](https://www.npmjs.com/package/sendemail)
+[![Join the chat at https://gitter.im/dwyl/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/chat/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 *Send* ***welcome, verification, password reset, update and reminder emails***
 from *any* node.js app.
 
@@ -30,8 +34,8 @@ so everyone can get on with their lives.
 
 ### Decisions We Made (*to Get Started as Fast as Possible*)
 
-In producing this module (*for our own use*) we have made a few
-of technical decisions (*for pragmatic reasons*) these are:
+In *crafting* this module (*for our own use*) we have made a few
+of technical decisions (*for pragmatic reasons*):
 
 1. use [***environment variables***](https://github.com/dwyl/learn-environment-variables)
 for storing sensitive information (*API Keys*)
@@ -97,29 +101,36 @@ Create *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates t
 ***Quick*** **Answer**: ***Yes***.  
 > For ***Expanded Answer***, see: ***Plain Text Templates?*** section in **Notes** (*below*).
 
+If you are stuck, have a look at /examples/templates/**welcome.js**.
 
 
-
-If you are stuck, have a look at **/examples/templates**.
-
-
-
-### 4. *Send* the Email!
+### 4. *Send* an Email!
 
 Proposed Method Signature:
 
 ```js
-sendEmail(template, options, callback);
+// if you store your Mandrill Key in config.env file load using env2:
+var path    = require('path');
+var config  = path.resolve(__dirname+'/../config.env');
+var env     = require('env2')(config);
+
+var email   = require('../lib/index.js'); // no api key
+
+var dir = __dirname + '/../examples/templates'; // unresolved
+dir = path.resolve(dir);
+email.set_template_directory(dir); // set template directory
+
+var person = {
+  name : "Jenny",
+  email: "dwyl.test+" + Math.random() + "@gmail.com" // your email here
+}
+
+email('welcome.html', person, function(error, result){
+  console.log(' - - - - - - - - - - - - - - - - - - - - -> email sent: ');
+  console.log(result);
+  console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
+})
 ```
-
-#### Simple Example:
-
-> Set the template directory for your project:
-
-```sh
-email.setTemplateDir(__dirname + '/path/to/templates/')
-```
-
 
 
 

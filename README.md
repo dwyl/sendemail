@@ -132,7 +132,7 @@ var person = {
   email: "your.name+test" + Math.random() + "@gmail.com"
 }
 
-email('welcome.html', person, function(error, result){
+email('welcome', person, function(error, result){
   console.log(' - - - - - - - - - - - - - - - - - - - - -> email sent: ');
   console.log(result);
   console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')

@@ -57,7 +57,7 @@ people with *specific needs*.
 ## *How*?
 
 ### Checklist (*everything you need to get started in 5 minutes*)
-+ [ ] install the `hapi-email` module from NPM
++ [ ] install the `sendemail` module from NPM
 + [ ] create/get a Mandril API Key
 + [ ] set your `MANDRILL_API_KEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
 + [ ] If you don't already have a /**templates** directory in your
@@ -66,7 +66,7 @@ project create one!
 one called `hello.txt` the other `hello.html`
 + [ ] borrow the code for `hello.txt` and `hello.html` from the **/examples/templates** directory of this project!
 + [ ] create a file called `welcome.js` and paste some sample
-code in it (see: [/examples/templates/**welcome.js**]() )
+code in it (see: [/examples/templates/**send-welcome-email.js**]() )
 
 ### 1. Install `sendemail` from NPM
 
@@ -76,7 +76,7 @@ npm install sendemail --save
 
 ### 2. Mandril API Key *Environment Variable*
 
-`hapi-email` requires you set an environment variable to
+`sendemail` requires you set an environment variable to
 *securely* store your Mandril API Key.
 
 > If you are ***new*** to ***environment variables***, we have a   
@@ -94,25 +94,32 @@ which provider you prefer so we can add support.
 
 ### 3. Create your *Template(s)*
 
-Create *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
+Create a ***pair*** of templates *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
 
+Here's what our ***pair*** of templates look like side-by-side:
+
+![welcome-email-templates-side-by-side](https://cloud.githubusercontent.com/assets/194400/10602078/23d7555c-770e-11e5-983e-4999923a61b2.png)
+
+[ Click the image to expand/zoom ]
 
 >***Question***: Should we create *plaintext* templates (*in addition to html*?)?  
 ***Quick*** **Answer**: ***Yes***.  
 > For ***Expanded Answer***, see: ***Plain Text Templates?*** section in **Notes** (*below*).
 
-If you are stuck, have a look at /examples/templates/**welcome.js**.
+If you are stuck, have a look at **/examples/templates/**
 
 
 ### 4. *Send* an Email!
 
-Proposed Method Signature:
+Create a file called `email.js` and paste the following:
 
 ```js
-// if you store your Mandrill Key in config.env file load using env2:
 var path    = require('path');
+
+// if you store your Mandrill Key in config.env file load using env2:
 var config  = path.resolve(__dirname+'/../config.env');
 var env     = require('env2')(config);
+// if you are simply exporting your environment variables omit this
 
 var email   = require('../lib/index.js'); // no api key
 
@@ -122,7 +129,7 @@ email.set_template_directory(dir); // set template directory
 
 var person = {
   name : "Jenny",
-  email: "dwyl.test+" + Math.random() + "@gmail.com" // your email here
+  email: "your.name+test" + Math.random() + "@gmail.com"
 }
 
 email('welcome.html', person, function(error, result){
@@ -132,7 +139,7 @@ email('welcome.html', person, function(error, result){
 })
 ```
 
-
+see: /examples/templates/**welcome.js**
 
 ## Want *Examples*?
 

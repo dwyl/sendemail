@@ -1,6 +1,6 @@
 // if you store your Mandrill Key in config.env file load using env2:
-var path    = require('path');
-var config  = path.resolve(__dirname+'/../config.env');
+var path    = require('path'); // used to resolve relative paths
+var config  = path.resolve(__dirname+'/../config.env'); // load config file
 var env     = require('env2')(config);
 
 var email   = require('../lib/index.js'); // no api key

@@ -114,18 +114,8 @@ If you are stuck, have a look at **/examples/templates/**
 Create a file called `email.js` and paste the following:
 
 ```js
-var path    = require('path');
-
-// if you store your Mandrill Key in config.env file load using env2:
-var config  = path.resolve(__dirname+'/../config.env');
-var env     = require('env2')(config);
-// if you are simply exporting your environment variables omit this
-
-var email   = require('../lib/index.js'); // no api key
-
-var dir = __dirname + '/../examples/templates'; // unresolved
-dir = path.resolve(dir);
-email.set_template_directory(dir); // set template directory
+var email   = require('sendemail'); // no api key
+email.set_template_directory('./relative/path/to/template/directory');
 
 var person = {
   name : "Jenny",
@@ -139,38 +129,16 @@ email('welcome', person, function(error, result){
 })
 ```
 
-see: /examples/templates/**welcome.js**
+#### Result:
 
-## Want *Examples*?
+![example dwyl welcome email](https://cloud.githubusercontent.com/assets/194400/10716076/1d89ff82-7b24-11e5-9e24-d5343735b76b.png)
 
-There are *many* situations where you want to send people email.
+For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/nelsonic/sendemail/blob/master/examples/send-welcome-email.js)  
+Note: you still need to set a `MANDRILL_API_KEY` *environment variable*
+for the email to be sent.
 
-### *Welcome* Email!
-
-A simple "hello & welcome to our community" email
-you send to people when they register to learn more about
-your product/service.
-
-
-### *Verify* Email Address
-
-As part of registering new people for your Hapi app you
-will need to *verify* their email addresses to ensure that people
-are not signing up with *fake* emails (or *worse* using someone else's email!)
-
-### *Set a New Password*
-
-People forget passwords, we need to help them
-set a new password as quickly & securely as possible.
-
-### *Reminder* Email?
-
-Remind people they signed up but have not *used* the product/service?
-
-### *Notification* Email?
-
-> Sam liked your post/photo/update ...
-social validation that your life has meaning!
+<br />
+___
 
 ## *Notes*?
 
@@ -249,3 +217,37 @@ https://litmus.com/blog/best-practices-for-plain-text-emails-a-look-at-why-theyr
 + API Key: https://mandrillapp.com/settings/index/
 + Original implementation (*tightly-coupled in our "Alpha"*):
 https://github.com/dwyl/time/issues/135
+
+
+## Want *Examples*? [![Join the chat at https://gitter.im/dwyl/chat](https://badges.gitter.im/Ask%20For%20More.svg)](https://gitter.im/dwyl/chat/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+There are *many* situations where you want to send people email.
+
+### *Welcome* Email!
+
+A simple "hello & welcome to our community" email
+you send to people when they register to learn more about
+your product/service.
+see: [/examples/templates/**send-welcome-email.js**](https://github.com/nelsonic/sendemail/blob/master/examples/send-welcome-email.js)
+
+
+
+### *Verify* Email Address
+
+As part of registering new people for your Hapi app you
+will need to *verify* their email addresses to ensure that people
+are not signing up with *fake* emails (or *worse* using someone else's email!)
+
+### *Set a New Password*
+
+People forget passwords, we need to help them
+set a new password as quickly & securely as possible.
+
+### *Reminder* Email?
+
+Remind people they signed up but have not *used* the product/service?
+
+### *Notification* Email?
+
+Sam liked your post/photo/update ...
+social validation that your life has meaning!

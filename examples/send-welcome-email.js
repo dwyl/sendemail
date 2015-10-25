@@ -14,7 +14,7 @@ var person = {
   email: "dwyl.test+" + Math.random() + "@gmail.com" // your email here
 }
 
-email('welcome.html', person, function(error, result){
+email('welcome', person, function(error, result){
   console.log(' - - - - - - - - - - - - - - - - - - - - -> email sent: ');
   console.log(result);
   console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')

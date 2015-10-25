@@ -1,7 +1,17 @@
-# Hapi Email
+# SendEmail
 
-Send ***welcome, verification, password reset, notification and reminder emails***
-from *any* Hapi.js app.
+[![Build Status](https://travis-ci.org/nelsonic/sendemail.svg?branch=tidyup)](https://travis-ci.org/nelsonic/sendemail)
+[![codecov.io](https://codecov.io/github/nelsonic/sendemail/coverage.svg?branch=master)](https://codecov.io/github/nelsonic/sendemail?branch=master)
+[![Code Climate](https://codeclimate.com/github/nelsonic/sendemail/badges/gpa.svg)](https://codeclimate.com/github/nelsonic/sendemail)
+[![Dependency Status](https://david-dm.org/nelsonic/sendemail.svg)](https://david-dm.org/nelsonic/sendemail)
+[![devDependency Status](https://david-dm.org/nelsonic/sendemail/dev-status.svg)](https://david-dm.org/nelsonic/sendemail#info=devDependencies)
+
+[![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat "Node.js 0.12 and 4.x latest both supported")](http://nodejs.org/download/)
+[![npm](https://img.shields.io/npm/v/sendemail.svg)](https://www.npmjs.com/package/sendemail)
+[![Join the chat at https://gitter.im/dwyl/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/chat/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+*Send* ***welcome, verification, password reset, update and reminder emails***
+from *any* node.js app.
 
 
 ## Why?
@@ -22,10 +32,32 @@ sending email to people as ***simple and reliable*** as possible.
 When email that *has* to get through as quickly as possible
 so everyone can get on with their lives.
 
+### Decisions We Made (*to Get Started as Fast as Possible*)
+
+In *crafting* this module (*for our own use*) we have made a few
+of technical decisions (*for pragmatic reasons*):
+
+1. use [***environment variables***](https://github.com/dwyl/learn-environment-variables)
+for storing sensitive information (*API Keys*)
+and projects-specific configuration (*Template Directory*)
+2. use ***Mandrill*** for *reliably* sending email messages because it has
+good documentation, excellent "*deliverability*" and includes a few thousand
+***free*** emails per month (*with all the benefits of their paid plans!*)
+3. use ***Handlebars*** for email template rendering. Handlebars is very
+easy to use and allows us to send ***beautiful*** **HTML** emails without
+the complexity or learning curve of many other view libraries.
+
+> **Note**: if you prefer to use a different Email Service provider or template/view
+library for your project,  
+[***please let us know***](https://github.com/nelsonic/sendemail/issues)!
+We are happy to support alternatives to make this project more
+*useful* to other  
+people with *specific needs*.
+
 ## *How*?
 
-### Checklist:
-+ [ ] install the `hapi-email` module from NPM
+### Checklist (*everything you need to get started in 5 minutes*)
++ [ ] install the `sendemail` module from NPM
 + [ ] create/get a Mandril API Key
 + [ ] set your `MANDRILL_API_KEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
 + [ ] If you don't already have a /**templates** directory in your
@@ -33,18 +65,18 @@ project create one!
 + [ ] create a pair of email templates in your /**templates** directory
 one called `hello.txt` the other `hello.html`
 + [ ] borrow the code for `hello.txt` and `hello.html` from the **/examples/templates** directory of this project!
-+ [ ] create a file called `email.js` and paste some sample
-code in it.
++ [ ] create a file called `welcome.js` and paste some sample
+code in it (see: [/examples/templates/**send-welcome-email.js**]() )
 
-### 1. Install `hapi-email` from NPM
+### 1. Install `sendemail` from NPM
 
 ```sh
-npm install hapi-email --save
+npm install sendemail --save
 ```
 
 ### 2. Mandril API Key *Environment Variable*
 
-`hapi-email` requires you set an environment variable to
+`sendemail` requires you set an environment variable to
 *securely* store your Mandril API Key.
 
 > If you are ***new*** to ***environment variables***, we have a   
@@ -57,43 +89,57 @@ get started: https://www.mandrill.com/signup/
 if you get stuck, *we are here to help*: [![Join the chat at https://gitter.im/{ORG-or-USERNAME}/{REPO-NAME}](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 > Note: If you prefer to use a *different* email sending provider,  
-please [***let us know***](https://github.com/nelsonic/hapi-email/issues)
-which one so we can add support.
+please [***let us know***](https://github.com/nelsonic/sendemail/issues)
+which provider you prefer so we can add support.
 
 ### 3. Create your *Template(s)*
 
-Create *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
+Create a ***pair*** of templates *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
 
+Here's what our ***pair*** of templates look like side-by-side:
 
->***Question***: Should we create *text-only* templates?  
+![welcome-email-templates-side-by-side](https://cloud.githubusercontent.com/assets/194400/10602078/23d7555c-770e-11e5-983e-4999923a61b2.png)
+
+[ Click the image to expand/zoom ]
+
+>***Question***: Should we create *plaintext* templates (*in addition to html*?)?  
 ***Quick*** **Answer**: ***Yes***.  
 > For ***Expanded Answer***, see: ***Plain Text Templates?*** section in **Notes** (*below*).
 
+If you are stuck, have a look at **/examples/templates/**
 
 
+### 4. *Send* an Email!
 
-If you are stuck, have a look at **/examples/templates**.
-
-
-
-### 4. *Send* the Email!
-
-Proposed Method Signature:
+Create a file called `email.js` and paste the following:
 
 ```js
-sendEmail(template, options, callback);
+var path    = require('path');
+
+// if you store your Mandrill Key in config.env file load using env2:
+var config  = path.resolve(__dirname+'/../config.env');
+var env     = require('env2')(config);
+// if you are simply exporting your environment variables omit this
+
+var email   = require('../lib/index.js'); // no api key
+
+var dir = __dirname + '/../examples/templates'; // unresolved
+dir = path.resolve(dir);
+email.set_template_directory(dir); // set template directory
+
+var person = {
+  name : "Jenny",
+  email: "your.name+test" + Math.random() + "@gmail.com"
+}
+
+email('welcome', person, function(error, result){
+  console.log(' - - - - - - - - - - - - - - - - - - - - -> email sent: ');
+  console.log(result);
+  console.log(' - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
+})
 ```
 
-#### Simple Example:
-
-> Set the template directory for your project:
-
-```sh
-email.setTemplateDir(__dirname + '/path/to/templates/')
-```
-
-
-
+see: /examples/templates/**welcome.js**
 
 ## Want *Examples*?
 
@@ -135,7 +181,7 @@ We are *currently* using ***Mandrill*** for ***dwyl***.
 If you want to use an alternative mail sender,
 e.g: [sendgrid](http://sendgrid.com/)
 or [amazon ses](https://aws.amazon.com/ses/)  
-please ***tell us***: https://github.com/nelsonic/hapi-email/issues
+please ***tell us***: https://github.com/nelsonic/sendemail/issues
 (*we are* ***always*** *happy to help*)
 
 ### Which View/Template Libaray?
@@ -154,7 +200,7 @@ we don't think `if` statements in views are a "*crime*" ... ***do you***...?
 
 > If anyone feels *strongly* about switching to an *alternative*
 template engine, please raise an issue:
-https://github.com/nelsonic/hapi-email/issues  
+https://github.com/nelsonic/sendemail/issues  
 (*please give clear reasons, i.e.* ***not*** *"react-ify-licious-heah because its* ***so cool*** ... ")
 
 ### *Plain Text*  Templates?

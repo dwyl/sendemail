@@ -1,10 +1,10 @@
 # SendEmail
 
-[![Build Status](https://travis-ci.org/nelsonic/sendemail.svg?branch=tidyup)](https://travis-ci.org/nelsonic/sendemail)
-[![codecov.io](https://codecov.io/github/nelsonic/sendemail/coverage.svg?branch=master)](https://codecov.io/github/nelsonic/sendemail?branch=master)
-[![Code Climate](https://codeclimate.com/github/nelsonic/sendemail/badges/gpa.svg)](https://codeclimate.com/github/nelsonic/sendemail)
-[![Dependency Status](https://david-dm.org/nelsonic/sendemail.svg)](https://david-dm.org/nelsonic/sendemail)
-[![devDependency Status](https://david-dm.org/nelsonic/sendemail/dev-status.svg)](https://david-dm.org/nelsonic/sendemail#info=devDependencies)
+[![Build Status](https://travis-ci.org/dwyl/sendemail.svg?branch=tidyup)](https://travis-ci.org/dwyl/sendemail)
+[![codecov.io](https://codecov.io/github/dwyl/sendemail/coverage.svg?branch=master)](https://codecov.io/github/dwyl/sendemail?branch=master)
+[![Code Climate](https://codeclimate.com/github/dwyl/sendemail/badges/gpa.svg)](https://codeclimate.com/github/dwyl/sendemail)
+[![Dependency Status](https://david-dm.org/dwyl/sendemail.svg)](https://david-dm.org/dwyl/sendemail)
+[![devDependency Status](https://david-dm.org/dwyl/sendemail/dev-status.svg)](https://david-dm.org/dwyl/sendemail#info=devDependencies)
 
 [![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat "Node.js 0.12 and 4.x latest both supported")](http://nodejs.org/download/)
 [![npm](https://img.shields.io/npm/v/sendemail.svg)](https://www.npmjs.com/package/sendemail)
@@ -49,7 +49,7 @@ the complexity or learning curve of many other view libraries.
 
 > **Note**: if you prefer to use a different Email Service provider or template/view
 library for your project,  
-[***please let us know***](https://github.com/nelsonic/sendemail/issues)!
+[***please let us know***](https://github.com/dwyl/sendemail/issues)!
 We are happy to support alternatives to make this project more
 *useful* to other  
 people with *specific needs*.
@@ -79,7 +79,7 @@ npm install sendemail --save
 `sendemail` requires you set an environment variable to
 *securely* store your Mandril API Key.
 
-> If you are ***new*** to ***environment variables***, we have a   
+> If you are ***new*** to ***environment variables***, we have a
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables
 
 #### Get a Mandril Account and Create an API Key
@@ -89,7 +89,7 @@ get started: https://www.mandrill.com/signup/
 if you get stuck, *we are here to help*: [![Join the chat at https://gitter.im/{ORG-or-USERNAME}/{REPO-NAME}](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 > Note: If you prefer to use a *different* email sending provider,  
-please [***let us know***](https://github.com/nelsonic/sendemail/issues)
+please [***let us know***](https://github.com/dwyl/sendemail/issues)
 which provider you prefer so we can add support.
 
 ### 3. Create your *Template(s)*
@@ -133,7 +133,7 @@ email('welcome', person, function(error, result){
 
 ![example dwyl welcome email](https://cloud.githubusercontent.com/assets/194400/10716076/1d89ff82-7b24-11e5-9e24-d5343735b76b.png)
 
-For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/nelsonic/sendemail/blob/master/examples/send-welcome-email.js)  
+For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)  
 Note: you still need to set a `MANDRILL_API_KEY` *environment variable*
 for the email to be sent.
 
@@ -149,7 +149,7 @@ We are *currently* using ***Mandrill*** for ***dwyl***.
 If you want to use an alternative mail sender,
 e.g: [sendgrid](http://sendgrid.com/)
 or [amazon ses](https://aws.amazon.com/ses/)  
-please ***tell us***: https://github.com/nelsonic/sendemail/issues
+please ***tell us***: https://github.com/dwyl/sendemail/issues
 (*we are* ***always*** *happy to help*)
 
 ### Which View/Template Libaray?
@@ -168,7 +168,7 @@ we don't think `if` statements in views are a "*crime*" ... ***do you***...?
 
 > If anyone feels *strongly* about switching to an *alternative*
 template engine, please raise an issue:
-https://github.com/nelsonic/sendemail/issues  
+https://github.com/dwyl/sendemail/issues  
 (*please give clear reasons, i.e.* ***not*** *"react-ify-licious-heah because its* ***so cool*** ... ")
 
 ### *Plain Text*  Templates?
@@ -228,7 +228,7 @@ There are *many* situations where you want to send people email.
 A simple "hello & welcome to our community" email
 you send to people when they register to learn more about
 your product/service.
-see: [/examples/templates/**send-welcome-email.js**](https://github.com/nelsonic/sendemail/blob/master/examples/send-welcome-email.js)
+see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)
 
 
 

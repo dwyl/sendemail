@@ -1,6 +1,6 @@
 {
   "name": "sendemail",
-  "version": "1.0.9",
+  "version": "2.0.0",
   "description": "Simplifies reliably sending emails from your node.js apps!",
   "main": "lib/index.js",
   "scripts": {
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "decache": "^3.0.3",
-    "env2": "^2.0.4",
+    "env2": "^2.0.7",
     "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
     "pre-commit": "1.1.2",
@@ -49,8 +49,7 @@
     "coverage"
   ],
   "dependencies": {
-    "handlebars": "^4.0.3",
-    "mandrill-api": "^1.0.45",
-    "riot": "^2.2.4"
+    "aws-sdk": "^2.3.7",
+    "handlebars": "^4.0.3"
   }
 }

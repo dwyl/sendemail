@@ -40,9 +40,10 @@ of technical decisions (*for pragmatic reasons*):
 1. use [***environment variables***](https://github.com/dwyl/learn-environment-variables)
 for storing sensitive information (*API Keys*)
 and projects-specific configuration (*Template Directory*)
-2. use ***Mandrill*** for *reliably* sending email messages because it has
-good documentation, excellent "*deliverability*" and includes a few thousand
-***free*** emails per month (*with all the benefits of their paid plans!*)
+2. use ***[Amazon Web Services Simple Email Service](https://aws.amazon.com/ses/getting-started/) ("AWS SES")***
+for *reliably* sending email messages because it has good documentation,
+excellent "*deliverability*" and ***no minimum*** spend (10 cents per 1000 emails sent)!
+(_there's also a **generous** "[**Free Tier**](https://aws.amazon.com/ses/pricing/)" of **65k emails per month** if you're new to AWS_)
 3. use ***Handlebars*** for email template rendering. Handlebars is very
 easy to use and allows us to send ***beautiful*** **HTML** emails without
 the complexity or learning curve of many other view libraries.

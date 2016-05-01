@@ -1,6 +1,6 @@
 var path    = require('path');
-var config  = path.resolve(__dirname+'/../config.env');
-var env     = require('env2')(config);
+var env     = path.resolve(__dirname+'/../.env');
+require('env2')(env);
 var test    = require('tape');
 var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '');
@@ -10,9 +10,6 @@ var email   = require('../lib/index.js'); // no api key
 // process.env.TEMPLATE_DIR get loaded by env2 above
 var TEMPLATE_DIR = process.env.TEMPLATE_DIRECTORY; // copy
 delete process.env.TEMPLATE_DIRECTORY;             // delete
-
-var APIKEY_COPY = process.env.MANDRILL_API_KEY; // store for later
-delete process.env.MANDRILL_API_KEY; // delete key to force fail
 
 test(file+" Template Dir has not yet been set!", function(t) {
   console.log(TEMPLATE_DIR);
@@ -105,14 +102,30 @@ test(file+" compile .txt template", function(t) {
   t.end()
 });
 
-test(file+" send email", function(t) {
+test(file+" Force Fail in Email", function(t) {
+  // decache('../lib/index.js'); // clear cached so its fresh
+  // delete process.env.MANDRILL_API_KEY; // delete key to force fail
+  // email = require('../lib/index.js');
+  var person = {
+    "name"     : "Bounce",
+    "email"    : 'invalid.email.address'
+  };
+  email('hello', person, function(err, data) {
+    // console.log(' - - - - - - - - - - - ');
+    // console.log(err, data);
+    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
+    t.end();
+  })
+});
+
+test(file+" send email (Success)", function(t) {
   var dir = __dirname + '/../examples/templates'; // unresolved
   dir = path.resolve(dir);
   email.set_template_directory(dir); // set template dir
 
   var person = {
-    name : "Random Dude",
-    email: "contact.nelsonic@gmail.com"
+    name : "Success",
+    email: "dwyl.test+sendemail@gmail.com"
   }
   email('hello', person, function(err, data){
     // console.log(err, data);
@@ -121,22 +134,6 @@ test(file+" send email", function(t) {
   })
 });
 
-test(file+" Force Fail in Email", function(t) {
-  // decache('../lib/index.js'); // clear cached so its fresh
-  // delete process.env.MANDRILL_API_KEY; // delete key to force fail
-  // email = require('../lib/index.js');
-  var person = {
-    "name"     : "Jenny",
-    "email"    : 'dwyl.test+email_welcome' +Math.random()+'@gmail.com',
-    "password" : "NotRequiredToTestEmail!"
-  };
-  email('hello', person, function(err, email_response) {
-    console.log(err, data);
-    // t.equal(err.status, 'error', "Invalid Mandrill Key");
-    // process.env.MANDRILL_API_KEY = APIKEY_COPY; // restore key for next tests
-    t.end();
-  })
-});
 //
 // // now make it pass
 // test(file+" Email Successfully Sent ", function(t) {

@@ -125,7 +125,7 @@ test(file+" send email (Success)", function(t) {
 
   var person = {
     name : "Success",
-    email: "dwyl.test+sendemail@gmail.com"
+    email: "success@simulator.amazonses.com"
   }
   email('hello', person, function(err, data){
     // console.log(err, data);

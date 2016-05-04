@@ -1,16 +1,14 @@
-var email   = require('../lib/index.js');
+var email   = require('../lib/index.js'); // auto-set TEMPLATE_DIR
 var path    = require('path');
 var test    = require('tape');
 var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '');
 var decache = require('decache');
 
-// process.env.TEMPLATE_DIR get loaded by env2 above
 var TEMPLATE_DIR = process.env.TEMPLATE_DIRECTORY; // copy
 delete process.env.TEMPLATE_DIRECTORY;             // delete
 
-test(file+" Template Dir has not yet been set!", function(t) {
-  console.log(TEMPLATE_DIR);
+test(file+" process.env.TEMPLATE_DIRECTORY has been unset", function(t) {
   t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
   t.end();
 });
@@ -25,7 +23,6 @@ test(file+" set_template_directory without args throws error!", function(t) {
   }
 });
 
-
 test(file+" set_template_directory with INVALID directory!", function(t) {
   try {
     email.set_template_directory('/invalid');
@@ -37,38 +34,12 @@ test(file+" set_template_directory with INVALID directory!", function(t) {
   }
 });
 
-// test(file+" set_template_directory with VALID (but empty) directory!", function(t) {
-//   try {
-//     delete process.env.TEMPLATE_DIRECTORY;
-//     email.set_template_directory(__dirname + '/empty');
-//   } catch (e) {
-//     console.log(' - - - - - - - - - - - - - - - - - - ')
-//     console.log(e);
-//     console.log(' - - - - - - - - - - - - - - - - - - ')
-//     // t.ok(e, 'Error: '+e);
-//     t.equal(process.env.TEMPLATE_DIRECTORY, undefined, "Not Set (as expected)");
-//     t.end();
-//   }
-// });
-
-test(file+" set_template_directory with VALID directory with teplates!", function(t) {
-  var dir = __dirname + '/../examples/templates'; // unresolved
-  email.set_template_directory(__dirname + '/../examples/templates');
-  var path = require('path');
-  dir = path.resolve(dir);
-  t.equal(process.env.TEMPLATE_DIRECTORY, dir, "Template Dir Set: "+ dir);
-  t.end();
-});
-
-
 test(file+" attempt to compile non-existent template (fail!)", function(t) {
   try {
-    var dir = __dirname + '/../examples/templates'; // unresolved
-    dir = path.resolve(dir);
-    email.set_template_directory(dir); // set template dir
+    process.env.TEMPLATE_DIRECTORY = TEMPLATE_DIR;
+    console.log('TEMPLATE_DIR:', TEMPLATE_DIR);
     email.compile_template('no-file.html');
   } catch (e) {
-    // console.log(e);
     t.ok(e.code === 'ENOENT', 'FS Error: '+JSON.stringify(e))
     t.end();
   }
@@ -77,9 +48,6 @@ test(file+" attempt to compile non-existent template (fail!)", function(t) {
 var Handlebars = require('handlebars');
 
 test(file+" compile a known template", function(t) {
-  var dir = __dirname + '/../examples/templates'; // unresolved
-  dir = path.resolve(dir);
-  email.set_template_directory(dir); // set template dir
   var c = email.compile_template('hello', 'html');
   var result = c({name:'Jimmy'});
   t.ok(result.indexOf("<p>Hello Jimmy!</p>") > -1, 'Rendered: '+result);
@@ -101,9 +69,6 @@ test(file+" compile .txt template", function(t) {
 });
 
 test(file+" Force Fail in Email", function(t) {
-  // decache('../lib/index.js'); // clear cached so its fresh
-  // delete process.env.MANDRILL_API_KEY; // delete key to force fail
-  // email = require('../lib/index.js');
   var person = {
     "name"     : "Bounce",
     "email"    : 'invalid.email.address'
@@ -117,10 +82,6 @@ test(file+" Force Fail in Email", function(t) {
 });
 
 test(file+" send email (Success)", function(t) {
-  var dir = __dirname + '/../examples/templates'; // unresolved
-  dir = path.resolve(dir);
-  email.set_template_directory(dir); // set template dir
-
   var person = {
     name : "Success",
     email: "success@simulator.amazonses.com"
@@ -131,18 +92,3 @@ test(file+" send email (Success)", function(t) {
     t.end()
   })
 });
-
-//
-// // now make it pass
-// test(file+" Email Successfully Sent ", function(t) {
-//   // console.log("MANDRILL_APIKEY >>> "+process.env.MANDRILL_APIKEY)
-//   decache('../lib/index.js'); // clear cached email module
-//   var email  = require('../lib/index.js'); // WITH api key
-//   email('welcome', person, function(error, result){
-//     console.log(' - - - - - - - - - - - - - - - - - - - ')
-//     console.log(result);
-//     console.log(' - - - - - - - - - - - - - - - - - - - ')
-//     t.equal(result[0].status, 'sent', "Email Sent "+result[0]._id);
-//     t.end();
-//   })
-// });

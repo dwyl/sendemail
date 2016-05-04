@@ -77,9 +77,14 @@ npm install sendemail --save
 
 ### 2. Set your *Environment Variables*
 
-`sendemail` requires you set an environment variable to
+`sendemail` requires you set ***four*** environment variable to
 *securely* store your AWS API Keys.
 
+> We recommend you use [`env2`](https://github.com/dwyl/env2) to load your
+Environment Variables from a file so you can easily keep track of which
+variables you are using in each environment.
+
+Create a file in the root of your project called `.env` and paste the following:
 ```sh
 export TEMPLATE_DIRECTORY="/../examples/templates"
 export AWS_REGION=eu-west-1

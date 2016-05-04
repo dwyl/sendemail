@@ -1,11 +1,9 @@
+var email   = require('../lib/index.js');
 var path    = require('path');
-// var env     = path.resolve(__dirname+'/../.env');
-require('env2')('.env');
 var test    = require('tape');
 var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '');
 var decache = require('decache');
-var email   = require('../lib/index.js'); // no api key
 
 // process.env.TEMPLATE_DIR get loaded by env2 above
 var TEMPLATE_DIR = process.env.TEMPLATE_DIRECTORY; // copy

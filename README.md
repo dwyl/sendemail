@@ -40,9 +40,10 @@ of technical decisions (*for pragmatic reasons*):
 1. use [***environment variables***](https://github.com/dwyl/learn-environment-variables)
 for storing sensitive information (*API Keys*)
 and projects-specific configuration (*Template Directory*)
-2. use ***Mandrill*** for *reliably* sending email messages because it has
-good documentation, excellent "*deliverability*" and includes a few thousand
-***free*** emails per month (*with all the benefits of their paid plans!*)
+2. use ***[Amazon Web Services Simple Email Service](https://aws.amazon.com/ses/getting-started/) ("AWS SES")***
+for *reliably* sending email messages because it has good documentation,
+excellent "*deliverability*" and ***no minimum*** spend (10 cents per 1000 emails sent)!
+(_there's also a **generous** "[**Free Tier**](https://aws.amazon.com/ses/pricing/)" of **65k emails per month** if you're new to AWS_)
 3. use ***Handlebars*** for email template rendering. Handlebars is very
 easy to use and allows us to send ***beautiful*** **HTML** emails without
 the complexity or learning curve of many other view libraries.
@@ -58,8 +59,8 @@ people with *specific needs*.
 
 ### Checklist (*everything you need to get started in 5 minutes*)
 + [ ] install the `sendemail` module from NPM
-+ [ ] create/get a Mandril API Key
-+ [ ] set your `MANDRILL_API_KEY` as an [*environment variable*](https://github.com/dwyl/learn-environment-variables)
++ [ ] Ensure that you have an AWS Account and have downloaded your credentials.
++ [ ] set the required [*environment variable*](https://github.com/dwyl/learn-environment-variables) (*see below*)
 + [ ] If you don't already have a /**templates** directory in your
 project create one!
 + [ ] create a pair of email templates in your /**templates** directory
@@ -74,23 +75,26 @@ code in it (see: [/examples/templates/**send-welcome-email.js**]() )
 npm install sendemail --save
 ```
 
-### 2. Mandril API Key *Environment Variable*
+### 2. Set your *Environment Variables*
 
-`sendemail` requires you set an environment variable to
-*securely* store your Mandril API Key.
+`sendemail` requires you set ***four*** environment variable to
+*securely* store your AWS API Keys.
+
+> We recommend you use [`env2`](https://github.com/dwyl/env2) to load your
+Environment Variables from a file so you can easily keep track of which
+variables you are using in each environment.
+
+Create a file in the root of your project called `.env` and paste the following:
+```sh
+export TEMPLATE_DIRECTORY="/../examples/templates"
+export AWS_REGION=eu-west-1
+export AWS_ACCESS_KEY_ID=YOURKEY
+export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET
+```
 
 > If you are ***new*** to ***environment variables***, we have a
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables
 
-#### Get a Mandril Account and Create an API Key
-
-If you have not already registered for Mandrill,
-get started: https://www.mandrill.com/signup/  
-if you get stuck, *we are here to help*: [![Join the chat at https://gitter.im/{ORG-or-USERNAME}/{REPO-NAME}](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-> Note: If you prefer to use a *different* email sending provider,  
-please [***let us know***](https://github.com/dwyl/sendemail/issues)
-which provider you prefer so we can add support.
 
 ### 3. Create your *Template(s)*
 
@@ -134,7 +138,7 @@ email('welcome', person, function(error, result){
 ![example dwyl welcome email](https://cloud.githubusercontent.com/assets/194400/10716076/1d89ff82-7b24-11e5-9e24-d5343735b76b.png)
 
 For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)  
-Note: you still need to set a `MANDRILL_API_KEY` *environment variable*
+Note: you still need to set your *environment variables*
 for the email to be sent.
 
 <br />
@@ -144,11 +148,11 @@ ___
 
 ### Which Email Service Provider?
 
-We are *currently* using ***Mandrill*** for ***dwyl***.
+We are *currently* using ***AWS SES*** for ***dwyl***.
 
 If you want to use an alternative mail sender,
 e.g: [sendgrid](http://sendgrid.com/)
-or [amazon ses](https://aws.amazon.com/ses/)  
+or [mailgun](https://www.mailgun.com/pricing)  
 please ***tell us***: https://github.com/dwyl/sendemail/issues
 (*we are* ***always*** *happy to help*)
 
@@ -204,19 +208,18 @@ https://www.campaignmonitor.com/dev-resources/guides/coding/
 + Best Practices for Plain Text Emails and Why They’re Important:
 https://litmus.com/blog/best-practices-for-plain-text-emails-a-look-at-why-theyre-important
 
+### Technical/Implementation Detail
+
++ Detail: https://aws.amazon.com/ses/details/
++ Getting Started: https://aws.amazon.com/ses/getting-started/
++ Video Tutorial: https://www.youtube.com/watch?v=0NT8KRXRFG8
++ Basic Tutorial: http://timstermatic.github.io/blog/2013/08/14/sending-emails-with-node-dot-js-and-amazon-ses/
++ Testing: http://docs.aws.amazon.com/ses/latest/DeveloperGuide/mailbox-simulator.html
+
 ### Stats/Trends
 
 + Email Client Stats: https://emailclientmarketshare.com/
 + Email Adoption: https://en.wikipedia.org/wiki/HTML_email#Adoption
-
-### Technical Detail
-
-+ Mandrill Node module code: https://bitbucket.org/mailchimp/mandrill-api-node
-(*sadly*, ***not on GitHub***...)
-+ Message send method: https://mandrillapp.com/api/docs/messages.nodejs.html
-+ API Key: https://mandrillapp.com/settings/index/
-+ Original implementation (*tightly-coupled in our "Alpha"*):
-https://github.com/dwyl/time/issues/135
 
 
 ## Want *Examples*? [![Join the chat at https://gitter.im/dwyl/chat](https://badges.gitter.im/Ask%20For%20More.svg)](https://gitter.im/dwyl/chat/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

@@ -86,7 +86,8 @@ variables you are using in each environment.
 
 Create a file in the root of your project called `.env` and paste the following:
 ```sh
-export TEMPLATE_DIRECTORY="/../examples/templates"
+export TEMPLATE_DIRECTORY=./examples/templates
+export SENDER_EMAIL_ADDRESS=your.aws.verified.email.address@gmail.com
 export AWS_REGION=eu-west-1
 export AWS_ACCESS_KEY_ID=YOURKEY
 export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET

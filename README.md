@@ -124,7 +124,8 @@ email.set_template_directory('./relative/path/to/template/directory');
 
 var person = {
   name : "Jenny",
-  email: "your.name+test" + Math.random() + "@gmail.com"
+  email: "your.name+test" + Math.random() + "@gmail.com",
+  subject:"Welcome to DWYL :)"
 }
 
 email('welcome', person, function(error, result){

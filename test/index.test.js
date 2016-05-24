@@ -71,7 +71,8 @@ test(file+" compile .txt template", function(t) {
 test(file+" Force Fail in Email", function(t) {
   var person = {
     "name"     : "Bounce",
-    "email"    : 'invalid.email.address'
+    "email"    : "invalid.email.address",
+    "subject":"Welcome to DWYL :)"
   };
   email('hello', person, function(err, data) {
     // console.log(' - - - - - - - - - - - ');
@@ -84,7 +85,8 @@ test(file+" Force Fail in Email", function(t) {
 test(file+" send email (Success)", function(t) {
   var person = {
     name : "Success",
-    email: "success@simulator.amazonses.com"
+    email: "success@simulator.amazonses.com",
+    "subject":"Welcome to DWYL :)"
   }
   email('hello', person, function(err, data){
     // console.log(err, data);

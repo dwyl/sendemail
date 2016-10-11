@@ -158,6 +158,23 @@ or [mailgun](https://www.mailgun.com/pricing)
 please ***tell us***: https://github.com/dwyl/sendemail/issues
 (*we are* ***always*** *happy to help*)
 
+
+### Moving out of AWS SES sandbox environment.
+
+When you first sign up to AWS, you are provided with a _sandbox account_.
+With this, you can send up to *200 emails a day,* to email addresses that you
+have registered on your sandbox environment. For some use cases this is fine,
+but for those who want a *higher daily sending quota*, want to send emails
+without the *restriction of registering recipient emails* upfront, amongst [other
+reasons](http://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html)
+'moving out' of your sandbox might be beneficial.
+For many services, this _upgrade_ comes with a cost, but with AWS SES, this is
+not necessarily the case. A quick and easy way to do so is to apply for an
+increase in your SES Sending Limit; (1) click on the following link,
+https://aws.amazon.com/ses/faqs/ (2) search for "apply" in section 4 and
+(3) click 'apply'.
+
+
 ### Which View/Template Libaray?
 
 For *simplicity* we are using

@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "decache": "^4.1.0",
+    "env2": "^2.0.7",
     "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
     "pre-commit": "1.1.2",
@@ -49,7 +50,6 @@
   ],
   "dependencies": {
     "aws-sdk": "^2.3.7",
-    "env2": "^2.0.7",
     "handlebars": "^4.0.3"
   }
 }

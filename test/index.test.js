@@ -1,3 +1,4 @@
+require('env2')('.env');
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
 var email     = sendemail.email;
 var path      = require('path');

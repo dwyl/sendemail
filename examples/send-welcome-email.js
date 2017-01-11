@@ -3,11 +3,12 @@ var path    = require('path'); // used to resolve relative paths
 var config  = path.resolve(__dirname+'/../config.env'); // load config file
 var env     = require('env2')(config);
 
-var email   = require('../lib/index.js'); // no api key
+var sendemail = require('../lib/index.js'); // no api key
+var email     = sendemail.email;
 
 var dir = __dirname + '/../examples/templates'; // unresolved
 dir = path.resolve(dir);
-email.set_template_directory(dir); // set template directory
+sendemail.set_template_directory(dir); // set template directory
 
 var person = {
   name : "Jenny",

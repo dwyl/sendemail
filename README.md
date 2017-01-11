@@ -119,8 +119,9 @@ If you are stuck, have a look at **/examples/templates/**
 Create a file called `email.js` and paste the following:
 
 ```js
-var email   = require('sendemail'); // no api key
-email.set_template_directory('./relative/path/to/template/directory');
+var sendemail   = require('sendemail').email; // no api key
+var email = sendemail.email;
+sendemail.set_template_directory('./relative/path/to/template/directory');
 
 var person = {
   name : "Jenny",

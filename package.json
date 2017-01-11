@@ -1,6 +1,6 @@
 {
   "name": "sendemail",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Simplifies reliably sending emails from your node.js apps!",
   "main": "lib/index.js",
   "scripts": {

@@ -232,6 +232,8 @@ If you have a helper function `notifyUser` which will subsequently call `require
 var notifyUser = require('./notifyUser.js');
 
 test('"notifyUser" should return the object { message: "email sent" }', function (t) {
+  notifyUser('Bob', function (err, res) {
+    t.deepEqual(res, { message: 'email sent' });
     t.end();
   });
 });

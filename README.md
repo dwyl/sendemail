@@ -212,6 +212,58 @@ non-technical people, focus on the fact that `.txt` email
 is more ***accessible*** and prevents your messages getting
 blocked by spam filters.
 
+### High volume of emails when running automated tests?
+When testing functions which will subsequently call methods in third party libraries,
+your tests no longer need to run through those methods,
+you can instead assume that the third party method will give back what they say they will give back
+(since these tests should already exist in the library you are using).
+
+Once you are sure there are [sufficient tests in place](https://codecov.io/github/dwyl/sendemail?branch=master) for the method you will stub, you may proceed with a test double.
+For this library there are significant benefits for using a test double for the `email` method (see #49).
+
+###### The following is a quick example of how to implement a test stub:
+If you have a helper function `notifyUser` which will subsequently call `require('sendemail').email`, this can be stubbed with:
+
+1. `npm install --save-dev sinon`
+
+2. Changing your test:
+
+```js
+var notifyUser = require('./notifyUser.js');
+
+test('"notifyUser" should return the object { message: "email sent" }', function (t) {
+  notifyUser('Bob', function (err, res) {
+    t.deepEqual(res, { message: 'email sent' });
+    t.end();
+  });
+});
+```
+
+To be something like this:
+
+```js
+var notifyUser = require('./notifyUser.js'); // this has to be required before the stub is implemented
+var sinon = require('sinon');
+var sendemail = require('sendemail');
+
+test('"notifyUser" should return the object { message: "email sent", error: null }', function (t) {
+  var email = sinon.stub(sendemail, 'email', function (name, person, cb) {
+    cb(null, { message: 'email sent', anyotherkeywecareabout: 'value' });
+  });
+
+  notifyUser('Bob', function (err, res) {
+    email.restore();
+
+    t.ok(email.calledWith('Bob'));
+    t.deepEqual(res, { message: 'email sent' });
+
+    t.end();
+  });
+});
+```
+
+Check out the [article in background reading](https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js) for best practices when implementing test doubles with sinon
+
 
 ## Useful Links:
 
@@ -227,6 +279,8 @@ https://blog.aweber.com/email-deliverability/who-cares-about-plain-text.htm
 https://www.campaignmonitor.com/dev-resources/guides/coding/
 + Best Practices for Plain Text Emails and Why They’re Important:
 https://litmus.com/blog/best-practices-for-plain-text-emails-a-look-at-why-theyre-important
++ Best practices for using test doubles (spies, stubs and mocks)
+https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js
 
 ### Technical/Implementation Detail
 

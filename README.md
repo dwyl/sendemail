@@ -224,7 +224,7 @@ For this library there are significant benefits for using a test double for the 
 ###### The following is a quick example of how to implement a test stub:
 If you have a helper function `notifyUser` which will subsequently call `require('sendemail').email`, this can be stubbed with:
 
-1. `npm install --D sinon`
+1. `npm install --save-dev sinon`
 
 2. Changing your test:
 
@@ -232,8 +232,6 @@ If you have a helper function `notifyUser` which will subsequently call `require
 var notifyUser = require('./notifyUser.js');
 
 test('"notifyUser" should return the object { message: "email sent" }', function (t) {
-  notifyUser('Bob', function (err, res) {
-    t.deepEqual(res, { message: 'email sent' });
     t.end();
   });
 });

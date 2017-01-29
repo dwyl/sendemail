@@ -1,11 +1,13 @@
 require('env2')('.env');
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
 var email = sendemail.email;
+var emails = sendemail.emails;
 var path = require('path');
 var test = require('tape');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];
 var file = dir + __filename.replace(__dirname, '');
 var decache = require('decache');
+
 
 var TEMPLATE_DIR = process.env.TEMPLATE_DIRECTORY; // copy
 delete process.env.TEMPLATE_DIRECTORY; // delete
@@ -76,41 +78,9 @@ test(file + " send email (Success)", function(t) {
     var person = {
         name: "Success",
         email: "success@simulator.amazonses.com",
-        "subject": "Welcome to DWYL :)"
+        subject: "Welcome to DWYL :)"
     }
     email('hello', person, function(err, data) {
-        // console.log(err, data);
-        t.ok(data.MessageId.length > 0, 'Email Sent!');
-        t.end()
-    })
-});
-
-test(file + " send email To CC BCC (Success)", function(t) {
-    var person1To = {
-        name: "Success1",
-        email: "success@simulator.amazonses.com",
-        "subject": "Welcome to DWYL :)"
-    }
-    var person2CC = {
-        name: "Success2",
-        email: "success@simulator.amazonses.com",
-        "subject": "Welcome to DWYL :)"
-    }
-    var person3BCC = {
-        name: "Success3",
-        email: "success@simulator.amazonses.com",
-        "subject": "Welcome to DWYL :)"
-    }
-    var person4To = {
-        name: "Success4",
-        email: "success@simulator.amazonses.com",
-        "subject": "Welcome to DWYL :)"
-    }
-    var personTo = [person1To, person4To]
-    var personCC = [person2CC]
-    var personBCC = [person3BCC]
-
-    email('hello', personTo, personCC, personBCC, function(err, data) {
         // console.log(err, data);
         t.ok(data.MessageId.length > 0, 'Email Sent!');
         t.end()
@@ -128,5 +98,154 @@ test(file + " Force Fail in Email", function(t) {
         // console.log(err, data);
         t.equal(err.statusCode, 400, "Invalid Mandrill Key");
         t.end();
+    })
+});
+
+test(file + " send email To CC BCC (Success)", function(t) {
+    var person1To = {
+        name: "Success1",
+        email: "success@simulator.amazonses.com"
+    }
+    var person2CC = {
+        name: "Success2",
+        email: "success@simulator.amazonses.com"
+    }
+    var person3BCC = {
+        name: "Success3",
+        email: "success@simulator.amazonses.com"
+    }
+    var person4To = {
+        name: "Success4",
+        email: "success@simulator.amazonses.com"
+    }
+    var personTo = [person1To, person4To]
+    var personCC = [person2CC, person1To]
+    var personBCC = [person3BCC, person2CC]
+
+    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+        //console.log(err, data);
+        t.ok(data.MessageId.length > 0, 'Email Sent!');
+        t.end()
+    })
+});
+
+test(file + " send email To CC(Success)", function(t) {
+    var person1To = {
+        name: "Success1",
+        email: "success@simulator.amazonses.com"
+    };
+    var person2CC = {
+        name: "Success2",
+        email: "success@simulator.amazonses.com"
+    };
+    var person3BCC = {
+        name: "Success3",
+        email: "success@simulator.amazonses.com"
+    };
+    var person4To = {
+        name: "Success4",
+        email: "success@simulator.amazonses.com"
+    };
+    var personTo = [person1To, person4To];
+    var personCC = [person2CC];
+    var personBCC = null;
+
+    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+        //console.log(err, data);
+        t.ok(data.MessageId.length > 0, 'Email Sent!');
+        t.end()
+    })
+});
+
+
+test(file + " send email To (Success)", function(t) {
+    var person2CC = {
+        name: "Success2",
+        email: "success@simulator.amazonses.com"
+    }
+    var personTo = null;
+    var personCC = [person2CC];
+    var personBCC = null;
+
+    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+        //console.log(err, data);
+        t.ok(data.MessageId.length > 0, 'Email Sent!');
+        t.end()
+    })
+});
+
+test(file + " send email CC (Success)", function(t) {
+    var person1To = {
+        name: "Success1",
+        email: "success@simulator.amazonses.com"
+    };
+    var person4To = {
+        name: "Success4",
+        email: "success@simulator.amazonses.com"
+    };
+    var personTo = [person1To, person4To];
+    var personCC = null;
+    var personBCC = null;
+
+    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+        //console.log(err, data);
+        t.ok(data.MessageId.length > 0, 'Email Sent!');
+        t.end()
+    })
+});
+
+test(file + " send email To BCC(Success)", function(t) {
+    var person1To = {
+        name: "Success1",
+        email: "success@simulator.amazonses.com"
+    };
+    var person2CC = {
+        name: "Success2",
+        email: "success@simulator.amazonses.com"
+    };
+    var person3BCC = {
+        name: "Success3",
+        email: "success@simulator.amazonses.com"
+    };
+    var person4To = {
+        name: "Success4",
+        email: "success@simulator.amazonses.com"
+    };
+    var personTo = [person1To, person4To];
+    var personCC = null;
+    var personBCC = [person3BCC];
+
+    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+        //console.log(err, data);
+        t.ok(data.MessageId.length > 0, 'Email Sent!');
+        t.end()
+    })
+});
+
+test(file + " send email All null(Force Failure)", function(t) {
+    var person1To = {
+        name: "Success1",
+        email: "success@simulator.amazonses.com"
+    };
+    var person2CC = {
+        name: "Success2",
+        email: "success@simulator.amazonses.com"
+    };
+    var person3BCC = {
+        name: "Success3",
+        email: "success@simulator.amazonses.com"
+    };
+    var person4To = {
+        name: "Success4",
+        email: "success@simulator.amazonses.com"
+    };
+    var personTo = null;
+    var personCC = null;
+    var personBCC = null;
+
+    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+        //console.log(err, data);
+        t.equal(err.statusCode, 400, "No Email Address provided");
+        t.end()
     })
 });

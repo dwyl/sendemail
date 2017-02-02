@@ -2,6 +2,7 @@ require('env2')('.env');
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
 var email = sendemail.email;
 var emails = sendemail.emails;
+var set_http_proxy = sendemail.set_http_proxy;
 var path = require('path');
 var test = require('tape');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];
@@ -122,7 +123,11 @@ test(file + " send email To CC BCC (Success)", function(t) {
     var personCC = [person2CC, person1To]
     var personBCC = [person3BCC, person2CC]
 
-    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+    var templateObjects = {
+        mydate: 'Feb 17 2017'
+    }
+
+    emails('hello', templateObjects, 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
         //console.log(err, data);
         t.ok(data.MessageId.length > 0, 'Email Sent!');
         t.end()
@@ -150,7 +155,11 @@ test(file + " send email To CC(Success)", function(t) {
     var personCC = [person2CC];
     var personBCC = null;
 
-    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+    var templateObjects = {
+        mydate: 'Feb 17 2017'
+    }
+
+    emails('hello', templateObjects, 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
         //console.log(err, data);
         t.ok(data.MessageId.length > 0, 'Email Sent!');
         t.end()
@@ -167,7 +176,11 @@ test(file + " send email To (Success)", function(t) {
     var personCC = [person2CC];
     var personBCC = null;
 
-    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+    var templateObjects = {
+        mydate: 'Feb 17 2017'
+    }
+
+    emails('hello', templateObjects, 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
         //console.log(err, data);
         t.ok(data.MessageId.length > 0, 'Email Sent!');
         t.end()
@@ -187,7 +200,11 @@ test(file + " send email CC (Success)", function(t) {
     var personCC = null;
     var personBCC = null;
 
-    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+    var templateObjects = {
+        mydate: 'Feb 17 2017'
+    }
+
+    emails('hello', templateObjects, 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
         //console.log(err, data);
         t.ok(data.MessageId.length > 0, 'Email Sent!');
         t.end()
@@ -215,7 +232,11 @@ test(file + " send email To BCC(Success)", function(t) {
     var personCC = null;
     var personBCC = [person3BCC];
 
-    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+    var templateObjects = {
+        mydate: 'Feb 17 2017'
+    }
+
+    emails('hello', templateObjects, 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
         //console.log(err, data);
         t.ok(data.MessageId.length > 0, 'Email Sent!');
         t.end()
@@ -243,9 +264,23 @@ test(file + " send email All null(Force Failure)", function(t) {
     var personCC = null;
     var personBCC = null;
 
-    emails('hello', 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
+    var templateObjects = {
+        mydate: 'Feb 17 2017'
+    }
+
+    emails('hello', templateObjects, 'Welcome to Email', personTo, personCC, personBCC, function(err, data) {
         //console.log(err, data);
         t.equal(err.statusCode, 400, "No Email Address provided");
         t.end()
     })
+});
+
+var AWS = require('aws-sdk');
+
+test(file + " check for proxy", function(t) {
+
+    var x = set_http_proxy();
+
+    t.ok(x, true, "Proxy Set")
+    t.end();
 });

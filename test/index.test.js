@@ -283,3 +283,10 @@ test(file + " check for proxy", function(t) {
     t.equal(x, false, "Proxy Set")
     t.end();
 });
+
+test(file + "check if proxy is not configured", function(t) {
+    process.env.HTTP_PROXY = "http://abc:8099.com";
+    var x = set_http_proxy();
+    t.equal(x, true, "Proxy Set")
+    t.end();
+});

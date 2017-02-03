@@ -278,13 +278,8 @@ test(file + " send email All null(Force Failure)", function(t) {
 var AWS = require('aws-sdk');
 
 test(file + " check for proxy", function(t) {
-    var x = set_http_proxy();
-    t.ok(x, false, "Proxy Set")
-    t.end();
-});
-
-test(file + "check if proxy is not configured", function(t) {
     delete process.env.HTTP_PROXY;
     var x = set_http_proxy();
+    t.equal(x, false, "Proxy Set")
     t.end();
 });

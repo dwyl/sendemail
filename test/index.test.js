@@ -279,7 +279,7 @@ var AWS = require('aws-sdk');
 
 test(file + " check for proxy", function(t) {
     var x = set_http_proxy();
-    t.ok(x, true, "Proxy Set")
+    t.ok(x, false, "Proxy Set")
     t.end();
 });
 

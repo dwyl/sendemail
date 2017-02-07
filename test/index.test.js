@@ -74,7 +74,7 @@ test(file+" Force Fail in Email", function(t) {
   var person = {
     "name"     : "Bounce",
     "email"    : "invalid.email.address",
-    "subject":"Welcome to DWYL :)"
+    "subject"  : "Welcome to DWYL :)"
   };
   email('hello', person, function(err, data) {
     // console.log(' - - - - - - - - - - - ');
@@ -84,14 +84,16 @@ test(file+" Force Fail in Email", function(t) {
   t.end();
 });
 
-test(file+" send email (Success)", function(t) {
+test(file + " send email (Success)", function(t) {
   var person = {
-    name : "Success",
-    email: "success@simulator.amazonses.com",
-    "subject":"Welcome to DWYL :)"
+    name    : "Success",
+    email   : "success@simulator.amazonses.com",
+    subject : "Welcome to DWYL :)"
   }
+
   email('hello', person, function(err, data){
     // console.log(err, data);
+
     t.ok(data.MessageId.length > 0, 'Email Sent!');
   })
   t.end()

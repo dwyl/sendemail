@@ -4,3 +4,4 @@ config.env
 coverage
 .env
 npm-debug.log
+rootkey.csv

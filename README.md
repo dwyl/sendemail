@@ -5,6 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/dwyl/sendemail/badges/gpa.svg)](https://codeclimate.com/github/dwyl/sendemail)
 [![Dependency Status](https://david-dm.org/dwyl/sendemail.svg)](https://david-dm.org/dwyl/sendemail)
 [![devDependency Status](https://david-dm.org/dwyl/sendemail/dev-status.svg)](https://david-dm.org/dwyl/sendemail#info=devDependencies)
+[![JavaScript Style Guide: Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg?style=flat)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
 
 [![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat "Node.js 0.12 and 4.x latest both supported")](http://nodejs.org/download/)
 [![npm](https://img.shields.io/npm/v/sendemail.svg)](https://www.npmjs.com/package/sendemail)
@@ -28,7 +29,7 @@ sending email to people as ***simple and reliable*** as possible.
 
 ## What?
 
-*Reliably* ***Send*** *beautiful* **email** with ***dependable delivery***.  
+*Reliably* ***Send*** *beautiful* **email** with ***dependable delivery***.
 When email that *has* to get through as quickly as possible
 so everyone can get on with their lives.
 
@@ -49,10 +50,10 @@ easy to use and allows us to send ***beautiful*** **HTML** emails without
 the complexity or learning curve of many other view libraries.
 
 > **Note**: if you prefer to use a different Email Service provider or template/view
-library for your project,  
+library for your project,
 [***please let us know***](https://github.com/dwyl/sendemail/issues)!
 We are happy to support alternatives to make this project more
-*useful* to other  
+*useful* to other
 people with *specific needs*.
 
 ## *How*?
@@ -107,8 +108,8 @@ Here's what our ***pair*** of templates look like side-by-side:
 
 [ Click the image to expand/zoom ]
 
->***Question***: Should we create *plaintext* templates (*in addition to html*?)?  
-***Quick*** **Answer**: ***Yes***.  
+>***Question***: Should we create *plaintext* templates (*in addition to html*?)?
+***Quick*** **Answer**: ***Yes***.
 > For ***Expanded Answer***, see: ***Plain Text Templates?*** section in **Notes** (*below*).
 
 If you are stuck, have a look at **/examples/templates/**
@@ -140,7 +141,7 @@ email('welcome', person, function(error, result){
 
 ![example dwyl welcome email](https://cloud.githubusercontent.com/assets/194400/10716076/1d89ff82-7b24-11e5-9e24-d5343735b76b.png)
 
-For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)  
+For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)
 Note: you still need to set your *environment variables*
 for the email to be sent.
 
@@ -155,7 +156,7 @@ We are *currently* using ***AWS SES*** for ***dwyl***.
 
 If you want to use an alternative mail sender,
 e.g: [sendgrid](http://sendgrid.com/)
-or [mailgun](https://www.mailgun.com/pricing)  
+or [mailgun](https://www.mailgun.com/pricing)
 please ***tell us***: https://github.com/dwyl/sendemail/issues
 (*we are* ***always*** *happy to help*)
 
@@ -184,7 +185,7 @@ handlebars is ***tried and tested*** and while it does not attempt
 to do anything *fancy* ("*VirtualDOM*"), it does allow
 you to do sophisticated templates with includes and iterators
 and supports compilation so its ***fast***
-(*fast enough ... how many millions of emails are you sending per day...?*)  
+(*fast enough ... how many millions of emails are you sending per day...?*)
 Yes... [*mustache*](https://github.com/janl/mustache.js/) is "*faster*"
 than handlebars ... but in our *experience* having *conditionals*
 (*i.e. "logic"*) is ***very useful*** for reducing the *number* of required templates while not (*significantly*) increasing complexity.
@@ -192,13 +193,13 @@ we don't think `if` statements in views are a "*crime*" ... ***do you***...?
 
 > If anyone feels *strongly* about switching to an *alternative*
 template engine, please raise an issue:
-https://github.com/dwyl/sendemail/issues  
+https://github.com/dwyl/sendemail/issues
 (*please give clear reasons, i.e.* ***not*** *"react-ify-licious-heah because its* ***so cool*** ... ")
 
 ### *Plain Text*  Templates?
 
 In our *experience*, *while* most *modern* email clients
-(Gmail, Apple/iOS Mail, Yahoo! Mail, Outlook)  
+(Gmail, Apple/iOS Mail, Yahoo! Mail, Outlook)
 have `HTML` email ***enabled by default***,
 *often* the people who *prefer* ***text-only***
 (e.g: people with Blackberry phones,
@@ -270,7 +271,7 @@ Check out the [article in background reading](https://semaphoreci.com/community/
 ### Background Reading
 
 + Designing for the inbox:
-https://www.campaignmonitor.com/dev-resources/guides/design/  
+https://www.campaignmonitor.com/dev-resources/guides/design/
 (*plenty of detail & highly informative*)
 + Who Cares About Plain Text [email]?
 https://blog.aweber.com/email-deliverability/who-cares-about-plain-text.htm

@@ -80,8 +80,8 @@ test(file+" Force Fail in Email", function(t) {
     // console.log(' - - - - - - - - - - - ');
     // console.log(err, data);
     t.equal(err.statusCode, 400, "Invalid Mandrill Key");
+    t.end();
   })
-  t.end();
 });
 
 test(file + " send email (Success)", function(t) {
@@ -95,6 +95,6 @@ test(file + " send email (Success)", function(t) {
     // console.log(err, data);
 
     t.ok(data.MessageId.length > 0, 'Email Sent!');
+    t.end()
   })
-  t.end()
 });

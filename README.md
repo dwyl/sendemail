@@ -154,6 +154,8 @@ with an array of `toAddresses`, `ccAddresses`, and `bccAddresses`.
  e.g.
  
 ```js
+  var sendemail   = require('sendemail');
+  
   var options = {
     templateName: 'hello',
     context: {
@@ -166,7 +168,7 @@ with an array of `toAddresses`, `ccAddresses`, and `bccAddresses`.
     bccAddresses: ['bccRecipient1@gmail.com', 'bccRecipient2@gmail.com],
   };
 
-  sendMany(options, callback)
+  sendemail.sendMany(options, callback);
 
 ```
 

@@ -168,7 +168,6 @@ test(file + " send email To BCC(Success)", function (t) {
   };
 
   sendMany(options, function (err, data) {
-    //console.log(err, data);
     t.ok(data.MessageId.length > 0, 'Email Sent!');
     t.end()
   })

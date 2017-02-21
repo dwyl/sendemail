@@ -2,7 +2,6 @@ require('env2')('.env');
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
 var email = sendemail.email;
 var sendMany = sendemail.sendMany;
-// var set_http_proxy = sendemail.set_http_proxy;
 var path = require('path');
 var test = require('tape');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];

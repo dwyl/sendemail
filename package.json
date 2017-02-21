@@ -50,6 +50,7 @@
   ],
   "dependencies": {
     "aws-sdk": "^2.3.7",
-    "handlebars": "^4.0.3"
+    "handlebars": "^4.0.3",
+    "proxy-agent": "^2.0.0"
   }
 }

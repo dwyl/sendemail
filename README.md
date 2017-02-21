@@ -145,6 +145,31 @@ For *full code of working example* see: [/examples/templates/**send-welcome-emai
 Note: you still need to set your *environment variables*
 for the email to be sent.
 
+
+#### More Options?:
+
+If you wish to send to multiple recipients of include CC or BCC recipients,
+use the sendMany method. This allows you to provide an options object 
+with an array of `toAddresses`, `ccAddresses`, and `bccAddresses`. 
+ e.g.
+ 
+```js
+  var options = {
+    templateName: 'hello',
+    context: {
+      tempalateVariableName: 'Variable Value',
+      name: 'Joe Bloggs'
+    },
+    subject: 'Welcome to Email',
+    toAddresses: ['recipient1@gmail.com', 'recipient2@gmail.com],
+    ccAddresses: ['ccRecipient1@gmail.com', 'ccRecipient2@gmail.com],
+    bccAddresses: ['bccRecipient1@gmail.com', 'bccRecipient2@gmail.com],
+  };
+
+  sendMany(options, callback)
+
+```
+
 <br />
 ___
 

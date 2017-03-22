@@ -3,5 +3,6 @@ node_modules
 config.env
 coverage
 .env
+.idea
 npm-debug.log
 rootkey.csv

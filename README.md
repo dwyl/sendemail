@@ -166,8 +166,8 @@ with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset op
     toAddresses: ['recipient1@gmail.com', 'recipient2@gmail.com'],
     ccAddresses: ['ccRecipient1@gmail.com', 'ccRecipient2@gmail.com'],
     bccAddresses: ['bccRecipient1@gmail.com', 'bccRecipient2@gmail.com'],
-    htmlCharset: 'utf16'
-    textCharset: 'utf16'
+    htmlCharset: 'utf16',
+    textCharset: 'utf16',
     subjectCharset: 'utf8'
   };
 

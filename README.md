@@ -150,7 +150,7 @@ for the email to be sent.
 
 If you wish to send to multiple recipients of include CC or BCC recipients,
 use the sendMany method. This allows you to provide an options object 
-with an array of `toAddresses`, `ccAddresses`, and `bccAddresses`. 
+with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset options. 
  e.g.
  
 ```js
@@ -166,6 +166,9 @@ with an array of `toAddresses`, `ccAddresses`, and `bccAddresses`.
     toAddresses: ['recipient1@gmail.com', 'recipient2@gmail.com'],
     ccAddresses: ['ccRecipient1@gmail.com', 'ccRecipient2@gmail.com'],
     bccAddresses: ['bccRecipient1@gmail.com', 'bccRecipient2@gmail.com'],
+    htmlCharset: 'utf16'
+    textCharset: 'utf16'
+    subjectCharset: 'utf8'
   };
 
   sendemail.sendMany(options, callback);

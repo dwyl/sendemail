@@ -103,8 +103,7 @@ export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET
 
 ```sh
 export TEMPLATE_DIRECTORY=./examples/templates
-TODO Confirm Mailgun requires verifying email addresses
-export SENDER_EMAIL_ADDRESS=your.mailgun.verified.email.address@gmail.com
+export SENDER_EMAIL_ADDRESS=your.sending.email.address@gmail.com
 export MAILGUN_API_KEY=YOURKEY
 export MAILGUN_SENDING_DOMAIN=YOURDOMAIN
 ```
@@ -235,6 +234,9 @@ https://aws.amazon.com/ses/faqs/ (2) search for "apply" in section 4 and
 #### Mailgun
 
 When you first sign up, Mailgun will provide a sandbox domain, which you can send from to test your integration. While in this sandbox, without a verified domain, you are limited to *300 emails per day*
+
+Moreover, while you can send from any email address, you can send TO only verified email
+addresses (requires a manual email verification step with the inbox owner)
 
 Once you're happy with your integration, you'll need to do the following:
 

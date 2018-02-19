@@ -1,13 +1,15 @@
 require('env2')('.env');
+
+var fs = require('fs');
+
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
 var email = sendemail.email;
 var sendMany = sendemail.sendMany;
-var path = require('path');
+var service = require('../lib/service.js');
 var test = require('tape');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];
 var file = dir + __filename.replace(__dirname, '');
 var decache = require('decache');
-var SUCCESS_SIMULATOR = 'success@simulator.amazonses.com';
 
 var TEMPLATE_DIR = process.env.TEMPLATE_DIRECTORY; // copy
 delete process.env.TEMPLATE_DIRECTORY; // delete
@@ -70,123 +72,174 @@ test(file + " compile .txt template", function (t) {
   t.end()
 });
 
-test(file + " Force Fail in Email", function (t) {
-  var person = {
-    "name": "Bounce",
-    "email": "invalid.email.address",
-    "subject": "Welcome to DWYL :)"
+
+//// EMAIL SPECIFIC TESTS
+
+// TODO Add docblock
+// sets state for each test on startup
+function email_test_startup (current_service_name) {
+
+  SERVICE_TESTING = {
+    mailgun: {
+      errorKey: 'status',
+      successIdKey: "id",
+      // TODO Hmm... better way here? Need to document at the very least
+      successSimulator: process.env.MAILGUN_VERIFIED_RECIPIENT,
+    },
+    ses: {
+      errorKey: "statusCode",
+      successIdKey: "MessageId",
+      successSimulator: "zack@bigroomstudios.com"//"success@simulator.amazonses.com",
+    }
   };
-  email('hello', person, function (err) {
-    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
-    t.end();
+
+  // TODO Document this, how service defaulting works (random, depends on key order on configs object
+  // we don't care about that here. configure everything, default to start, then explicit for rest)
+  // TODO Assumes all services configured properly
+  var default_config = SERVICE_TESTING[service.determine().name];
+  var specific_service_config = SERVICE_TESTING[current_service_name];
+
+  // TODO Document more clearly
+  // First run is going with default, typical use case of user not specifying a service, not setting env var,
+  // which is last key in service/SERVICE_CONFIGS, as accessed by loop in service/determine_service
+    // undefined here is coerced to a string; can process.env hold only strings and numbers?
+  //process.env.CURRENT_SERVICE = specific_service_config ? current_service_name : undefined;
+  // we don't use a ternary b/c set to undefined = string
+  if (specific_service_config) {
+    // TODO exists solely to make tests less cluttered / specifying services easier
+    process.env.CURRENT_SERVICE = current_service_name;
+  }
+  process.env.SUCCESS_SIMULATOR = specific_service_config ? specific_service_config.successSimulator : default_config.successSimulator;
+  process.env.SUCCESS_ID_KEY = specific_service_config ? specific_service_config.successIdKey : default_config.successIdKey;
+  process.env.ERROR_KEY = specific_service_config ? specific_service_config.errorKey : default_config.errorKey;
+}
+
+var services = [undefined, 'mailgun', 'ses'];
+
+services.forEach(function (specific_service) {
+  // Annotate tests with current sending service in use
+  var service_test_description = file + " — " + (specific_service || "Default Sender") + ":";
+
+  test(service_test_description + " Force Fail in Email", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      "name": "Bounce",
+      "email": "invalid.email.address",
+      "subject": "Welcome to DWYL :)"
+    };
+    email('hello', person, function (err) {
+      t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+      t.end();
+    });
   });
-});
 
-test(file + " send email (Success)", function (t) {
-  var person = {
-    name: "Success",
-    email: "success@simulator.amazonses.com",
-    subject: "Welcome to DWYL :)"
-  };
+  test(service_test_description + " send email (Success)", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      name: "Success",
+      email: process.env.SUCCESS_SIMULATOR,
+      subject: "Welcome to DWYL :)"
+    };
 
-  email('hello', person, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end();
+    email('hello', person, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+      t.end();
+    });
   });
-});
 
-test(file + " sendMany email To CC BCC (Success)", function (t) {
+  test(service_test_description + " sendMany email To CC BCC (Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: [null],
+      bccAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR]
+    };
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: [null],
-    bccAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR]
-  };
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+      t.end();
+    })
+  });
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end();
-  })
-});
+  test(service_test_description + " sendMany email To CC(Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: [process.env.SUCCESS_SIMULATOR],
+      bccAddresses: null
+    };
 
-test(file + " sendMany email To CC(Success)", function (t) {
-
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: [SUCCESS_SIMULATOR],
-    bccAddresses: null
-  };
-
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end()
-  })
-});
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+      t.end()
+    })
+  });
 
 
-test(file + " sendMany email To (Success)", function (t) {
+  test(service_test_description + " sendMany email To (Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: null,
+      bccAddresses: null
+    };
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: null,
-    bccAddresses: null
-  };
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+      t.end()
+    })
+  });
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end()
-  })
-});
+  test(service_test_description + " send email To BCC(Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: null,
+      bccAddresses: [process.env.SUCCESS_SIMULATOR]
+    };
 
-test(file + " send email To BCC(Success)", function (t) {
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+      t.end()
+    })
+  });
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: null,
-    bccAddresses: [SUCCESS_SIMULATOR]
-  };
+  test(service_test_description + " send email All null(Force Failure)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: null,
+      ccAddresses: null,
+      bccAddresses: null
+    };
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end()
-  })
-});
-
-test(file + " send email All null(Force Failure)", function (t) {
-
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: null,
-    ccAddresses: null,
-    bccAddresses: null
-  };
-
-  sendMany(options, function (err) {
-    t.equal(err.statusCode, 400, "No Email Address provided");
-    t.end()
-  })
+    sendMany(options, function (err) {
+      t.equal(err[process.env.ERROR_KEY], 400, "No Email Address provided");
+      t.end()
+    })
+  });
 });

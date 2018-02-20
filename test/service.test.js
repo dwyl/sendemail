@@ -5,10 +5,15 @@ var dir = __dirname.split('/')[__dirname.split('/').length - 1];
 var file = dir + __filename.replace(__dirname, '');
 var test = require('tape');
 
+// TODO Delete this test / Or rather, switch to using CURRENT_SERVICE
+// TODO Add a test for using CURRENT_SERVICE
 // TODO Ok assumption?????
 // Assumes .env used for testing has all available services configured simultaneously
 test(file + " specify a sending service explicitly", function (t) {
   // value randomly selected, can be any valid service
+
+  // Better test
+  // Find default; Pick service name NOT the default; specify that; compare to default
   var specific_service = "mailgun";
   var determined = service.determine(specific_service);
   t.equal(determined.name, specific_service, "Service determined according to specified");
@@ -40,20 +45,25 @@ test(file + " attempt to use a valid, but unconfigured service", function (t) {
 
 test(file + " attempt to determine a service with no services configured", function (t) {
   var configs = service.service_configs;
-  Object.keys(configs).forEach(function (specific_service) {
-    unconfigure_service(specific_service);
-  });
+  for (var service_name in configs) {
+    unconfigure_service(service_name);
+  }
   try {
     service.determine();
   } catch (e) {
-    t.equal(e.message, "No sending service properly configured. Doublecheck the environment variables required for your service of choice");
+    t.equal(e.message, "No sending service properly configured.");
     t.end();
   }
 });
 
-// TODO Add docblock
+/**
+ * Removes all configuration for a specified service from the environment
+ *
+ * @param {String} specific_service — name of a sending service
+ * @returns undefined
+ */
 function unconfigure_service (specific_service) {
-  return service.service_configs[specific_service].required_env.forEach(function (envVar) {
+  service.service_configs[specific_service].required_env.forEach(function (envVar) {
     delete process.env[envVar];
   });
 }

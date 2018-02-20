@@ -75,8 +75,13 @@ test(file + " compile .txt template", function (t) {
 
 //// EMAIL SPECIFIC TESTS
 
-// TODO Add docblock
-// sets state for each test on startup
+/**
+ * Sets state for each test on startup, using a specific service
+ * when requested (and requested service is valid and configured).
+ *
+ * @param {String} [current_service_name] - name of a sending service
+ * @returns {undefined}
+ */
 function email_test_startup (current_service_name) {
 
   SERVICE_TESTING = {
@@ -84,29 +89,24 @@ function email_test_startup (current_service_name) {
       errorKey: 'status',
       successIdKey: "id",
       // TODO Hmm... better way here? Need to document at the very least
-      successSimulator: process.env.MAILGUN_VERIFIED_RECIPIENT,
+      // Mailgun doesn't offer a test mailbox, so you need to authorized a recipient in your dashboard
+      successSimulator: process.env.MAILGUN_AUTHORIZED_RECIPIENT,
     },
     ses: {
       errorKey: "statusCode",
       successIdKey: "MessageId",
-      successSimulator: "zack@bigroomstudios.com"//"success@simulator.amazonses.com",
+      successSimulator: "success@simulator.amazonses.com"
     }
   };
 
-  // TODO Document this, how service defaulting works (random, depends on key order on configs object
-  // we don't care about that here. configure everything, default to start, then explicit for rest)
-  // TODO Assumes all services configured properly
+
+  // default_config — where no specific service is requested — represents the typical
+  // use case of the library's user not specifying a service. In that case, we default to
+  // the last key in service/SERVICE_CONFIGS, as accessed by the for...in loop in service.determine_service
   var default_config = SERVICE_TESTING[service.determine().name];
   var specific_service_config = SERVICE_TESTING[current_service_name];
 
-  // TODO Document more clearly
-  // First run is going with default, typical use case of user not specifying a service, not setting env var,
-  // which is last key in service/SERVICE_CONFIGS, as accessed by loop in service/determine_service
-    // undefined here is coerced to a string; can process.env hold only strings and numbers?
-  //process.env.CURRENT_SERVICE = specific_service_config ? current_service_name : undefined;
-  // we don't use a ternary b/c set to undefined = string
   if (specific_service_config) {
-    // TODO exists solely to make tests less cluttered / specifying services easier
     process.env.CURRENT_SERVICE = current_service_name;
   }
   process.env.SUCCESS_SIMULATOR = specific_service_config ? specific_service_config.successSimulator : default_config.successSimulator;
@@ -114,14 +114,33 @@ function email_test_startup (current_service_name) {
   process.env.ERROR_KEY = specific_service_config ? specific_service_config.errorKey : default_config.errorKey;
 }
 
-var services = [undefined, 'mailgun', 'ses'];
+/**
+ * Removes all configuration set at test runtime, ensuring tests
+ * are totally independent, configuration-wise.
+ *
+ * @returns {undefined}
+ */
+function email_test_teardown () {
 
-services.forEach(function (specific_service) {
-  // Annotate tests with current sending service in use
+  delete process.env.CURRENT_SERVICE;
+  delete process.env.SUCCESS_SIMULATOR;
+  delete process.env.SUCCESS_ID_KEY;
+  delete process.env.ERROR_KEY;
+}
+
+// undefined means using the sending service set by default
+var services_to_test = [undefined];
+for (var service_name in service.service_configs) {
+  services_to_test.push(service_name);
+};
+
+services_to_test.forEach(function (specific_service) {
+  // Annotates tests with current sending service
   var service_test_description = file + " — " + (specific_service || "Default Sender") + ":";
 
   test(service_test_description + " Force Fail in Email", function (t) {
     email_test_startup(specific_service);
+
     var person = {
       "name": "Bounce",
       "email": "invalid.email.address",
@@ -129,6 +148,8 @@ services.forEach(function (specific_service) {
     };
     email('hello', person, function (err) {
       t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+
+      email_test_teardown();
       t.end();
     });
   });
@@ -143,8 +164,11 @@ services.forEach(function (specific_service) {
 
     email('hello', person, function (err, data) {
       t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
       t.end();
     });
+
   });
 
   test(service_test_description + " sendMany email To CC BCC (Success)", function (t) {
@@ -162,8 +186,11 @@ services.forEach(function (specific_service) {
 
     sendMany(options, function (err, data) {
       t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
       t.end();
-    })
+    });
+
   });
 
   test(service_test_description + " sendMany email To CC(Success)", function (t) {
@@ -181,8 +208,10 @@ services.forEach(function (specific_service) {
 
     sendMany(options, function (err, data) {
       t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
-      t.end()
-    })
+
+      email_test_teardown();
+      t.end();
+    });
   });
 
 
@@ -201,8 +230,11 @@ services.forEach(function (specific_service) {
 
     sendMany(options, function (err, data) {
       t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
-      t.end()
-    })
+
+      email_test_teardown();
+      t.end();
+    });
+
   });
 
   test(service_test_description + " send email To BCC(Success)", function (t) {
@@ -220,8 +252,10 @@ services.forEach(function (specific_service) {
 
     sendMany(options, function (err, data) {
       t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
-      t.end()
-    })
+
+      email_test_teardown();
+      t.end();
+    });
   });
 
   test(service_test_description + " send email All null(Force Failure)", function (t) {
@@ -239,7 +273,9 @@ services.forEach(function (specific_service) {
 
     sendMany(options, function (err) {
       t.equal(err[process.env.ERROR_KEY], 400, "No Email Address provided");
-      t.end()
-    })
+
+      email_test_teardown();
+      t.end();
+    });
   });
 });

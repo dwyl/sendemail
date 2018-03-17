@@ -126,7 +126,7 @@ sendemail.set_template_directory('./relative/path/to/template/directory');
 
 var person = {
   name : "Jenny",
-  email: "your.name+test" + Math.random() + "@gmail.com",
+  email: "your.name+test" + Math.random() + "@gmail.com", // person.email can also accept an array of emails
   subject:"Welcome to DWYL :)"
 }
 

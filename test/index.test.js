@@ -70,7 +70,7 @@ test(file + " compile .txt template", function (t) {
   t.end()
 });
 
-test(file + " Force Fail in Email", function (t) {
+test(file + " Force Fail in Email for a single email", function (t) {
   var person = {
     "name": "Bounce",
     "email": "invalid.email.address",
@@ -82,10 +82,47 @@ test(file + " Force Fail in Email", function (t) {
   });
 });
 
-test(file + " send email (Success)", function (t) {
+test(file + " Force Fail in Email for an array of invalid emails", function (t) {
+  var person = {
+    "name": "Bounce",
+    "email": ["invalid.email.address", "otherinvalid.email.address"],
+    "subject": "Welcome to DWYL :)"
+  };
+  email('hello', person, function (err) {
+    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
+    t.end();
+  });
+});
+
+test(file + " Force Fail in Email for an array of valid emails and one invalid email", function (t) {
+  var person = {
+    "name": "Bounce",
+    "email": ["success@simulator.amazonses.com", "invalid.email.address", "success@simulator.amazonses.com"],
+    "subject": "Welcome to DWYL :)"
+  };
+  email('hello', person, function (err) {
+    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
+    t.end();
+  });
+});
+
+test(file + " send email (Success) for a single email", function (t) {
   var person = {
     name: "Success",
     email: "success@simulator.amazonses.com",
+    subject: "Welcome to DWYL :)"
+  };
+
+  email('hello', person, function (err, data) {
+    t.ok(data.MessageId.length > 0, 'Email Sent!');
+    t.end();
+  });
+});
+
+test(file + " send email (Success) for an array of emails", function (t) {
+  var person = {
+    name: "Success",
+    email: ["success@simulator.amazonses.com", "success@simulator.amazonses.com"],
     subject: "Welcome to DWYL :)"
   };
 

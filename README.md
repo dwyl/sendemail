@@ -122,7 +122,6 @@ Create a file called `email.js` and paste the following:
 ```js
 var sendemail = require('sendemail')
 var email = sendemail.email;
-sendemail.set_template_directory('./relative/path/to/template/directory');
 
 var person = {
   name : "Jenny",

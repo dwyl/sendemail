@@ -134,13 +134,12 @@ If you are stuck, have a look at **/examples/templates/**
 Create a file called `email.js` and paste the following:
 
 ```js
-var sendemail   = require('sendemail').email; // no api key
+var sendemail = require('sendemail')
 var email = sendemail.email;
-sendemail.set_template_directory('./relative/path/to/template/directory');
 
 var person = {
   name : "Jenny",
-  email: "your.name+test" + Math.random() + "@gmail.com",
+  email: "your.name+test" + Math.random() + "@gmail.com", // person.email can also accept an array of emails
   subject:"Welcome to DWYL :)"
 }
 
@@ -177,6 +176,7 @@ with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset op
       name: 'Joe Bloggs'
     },
     subject: 'Welcome to Email',
+    senderEmailAddress: 'From Name <from@gmail.com>',
     toAddresses: ['recipient1@gmail.com', 'recipient2@gmail.com'],
     ccAddresses: ['ccRecipient1@gmail.com', 'ccRecipient2@gmail.com'],
     bccAddresses: ['bccRecipient1@gmail.com', 'bccRecipient2@gmail.com'],
@@ -281,6 +281,23 @@ and tracking data ... but, if you're building a tool for
 non-technical people, focus on the fact that `.txt` email
 is more ***accessible*** and prevents your messages getting
 blocked by spam filters.
+
+### Setting up .env file for testing
+
+Because we support multiple sending services, our .env file,
+for testing purposes, becomes a little complicated to ensure we
+run all of our tests again all of our supported services.
+
+1. Create a `.env` file in project root
+2. Copy and paste, then set values for, each service's environment variables (see step 2 of setup checklist),
+except the values shared across all services (`TEMPLATE_DIRECTORY` and `SENDER_EMAIL_ADDRESS`)
+3. Set an additional MAILGUN_AUTHORIZED_RECIPIENT var, which is whatever email address you've
+set as an authorized recipient in Mailgun (if you're still in a sandbox) or any recipient you
+feel ok sending test emails to if you're domain is already verified.
+
+Now the tests should all run and pass, looping through all services and running our
+set of email-sending tests again each.
+
 
 ### High volume of emails when running automated tests?
 When testing functions which will subsequently call methods in third party libraries,

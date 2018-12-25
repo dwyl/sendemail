@@ -137,7 +137,7 @@ services_to_test.forEach(function (specific_service) {
   // Annotates tests with current sending service
   var service_test_description = file + " — " + (specific_service || "Default Sender") + ":";
 
-  test(service_test_description + " Force Fail in Email", function (t) {
+  test(service_test_description + " Force Fail in Email for a single email", function (t) {
     email_test_startup(specific_service);
 
     var person = {
@@ -153,7 +153,42 @@ services_to_test.forEach(function (specific_service) {
     });
   });
 
-  test(service_test_description + " send email (Success)", function (t) {
+  test(service_test_description + " Force Fail in Email for an array of invalid emails", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      "name": "Bounce",
+      "email": ["invalid.email.address", "otherinvalid.email.address"],
+      "subject": "Welcome to DWYL :)"
+    };
+    email('hello', person, function (err) {
+      t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " Force Fail in Email for an array of valid emails and one invalid email", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      "name": "Bounce",
+      "email": [process.env.SUCCESS_SIMULATOR, "invalid.email.address", process.env.SUCCESS_SIMULATOR],
+      "subject": "Welcome to DWYL :)"
+    };
+    email('hello', person, function (err, data) {
+
+      if (specific_service === 'mailgun') {
+          t.ok(true, 'Mailgun doesn\'t throw in this case, but queues up messages for valid addresses and ignores the invalid ones');
+      } else {
+          t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+      }
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " send email (Success) for a single email", function (t) {
     email_test_startup(specific_service);
     var person = {
       name: "Success",
@@ -167,7 +202,22 @@ services_to_test.forEach(function (specific_service) {
       email_test_teardown();
       t.end();
     });
+  });
 
+  test(service_test_description + " send email (Success) for an array of emails", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      name: "Success",
+      email: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      subject: "Welcome to DWYL :)"
+    };
+
+    email('hello', person, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
+      t.end();
+    });
   });
 
   test(service_test_description + " sendMany email To CC BCC (Success)", function (t) {

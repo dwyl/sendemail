@@ -50,7 +50,7 @@ the complexity or learning curve of many other view libraries.
     - **[Mailgun](https://www.mailgun.com/)**
 
 Both are reliable, well-documented, offer excellent "*deliverability*", and have fairly generous free tiers.
-For more information, check out the [Technical/Implementation Detail](#technical/implementation-detail) below
+For more information, check out the [Service Details](#service-details) section below
 
 > **Note**: if you prefer to use a different Email Service provider or template/view
 library for your project,
@@ -157,7 +157,7 @@ email('welcome', person, function(error, result){
 
 For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)
 Note: you still need to set your *environment variables*
-for the email to be sent. The example will work regardless of which service you use; our public API is platform agnostic TODO Is this true?
+for the email to be sent. The example will work regardless of which service you use; our public API is platform agnostic
 
 
 #### More Options?:
@@ -352,7 +352,7 @@ https://litmus.com/blog/best-practices-for-plain-text-emails-a-look-at-why-theyr
 + Best practices for using test doubles (spies, stubs and mocks)
 https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js
 
-### Technical/Implementation Detail
+### Service Details
 
 #### AWS SES
 
@@ -365,8 +365,7 @@ https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-m
 
 #### Mailgun
 
-We opted to use an independent Mailgun JavaScript client — https://github.com/bojand/mailgun-js — over [Mailgun's official JS library](https://github.com/mailgun/mailgun-js) because the independent library is more actively maintained and the maintainer appears to accept PRs from anyone interested in and willing to contribute to and improve their work. Given the 2 libraries are comparable in functionality, we opted to work with a library more likely to continue working seamlessly (or at least be open to bug fixes; fingers crossed no issues, though :) )
-
++ Mailgun's official JS library: (https://github.com/mailgun/mailgun-js)
 + Detail: https://www.mailgun.com/sending-email
 + Getting Started: https://documentation.mailgun.com/en/latest/quickstart.html
   + The code samples there are, of course, using Mailgun's official library, not the independent one

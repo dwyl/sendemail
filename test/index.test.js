@@ -84,12 +84,11 @@ test(file + " compile .txt template", function (t) {
  */
 function email_test_startup (current_service_name) {
 
-  SERVICE_TESTING = {
+  var SERVICE_TESTING = {
     mailgun: {
-      errorKey: 'status',
+      errorKey: "status",
       successIdKey: "id",
-      // TODO Hmm... better way here? Need to document at the very least
-      // Mailgun doesn't offer a test mailbox, so you need to authorized a recipient in your dashboard
+      // Mailgun doesn't offer a test mailbox, so you need to authorize a recipient in your dashboard
       successSimulator: process.env.MAILGUN_AUTHORIZED_RECIPIENT,
     },
     ses: {

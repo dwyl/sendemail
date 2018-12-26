@@ -121,7 +121,7 @@ function email_test_startup (current_service_name) {
  */
 function email_test_teardown () {
 
-  delete process.env.CURRENT_SERVICE;
+    delete process.env.CURRENT_SERVICE;
   delete process.env.SUCCESS_SIMULATOR;
   delete process.env.SUCCESS_ID_KEY;
   delete process.env.ERROR_KEY;
@@ -145,7 +145,8 @@ services_to_test.forEach(function (specific_service) {
       "email": "invalid.email.address",
       "subject": "Welcome to DWYL :)"
     };
-    email('hello', person, function (err) {
+    email('hello', person, function (err, data) {
+
       t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
 
       email_test_teardown();

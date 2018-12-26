@@ -98,16 +98,8 @@ function email_test_startup (current_service_name) {
     }
   };
 
-
-  // default_config — where no specific service is requested — represents the typical
-  // use case of the library's user not specifying a service. In that case, we default to
-  // the last key in service/SERVICE_CONFIGS, as accessed by the for...in loop in service.determine_service
-  var default_config = SERVICE_TESTING[service.determine().name];
   var specific_service_config = SERVICE_TESTING[current_service_name];
-
-  if (specific_service_config) {
-    process.env.CURRENT_SERVICE = current_service_name;
-  }
+  process.env.SENDEMAIL_SERVICE = current_service_name;
   process.env.SUCCESS_SIMULATOR = specific_service_config ? specific_service_config.successSimulator : default_config.successSimulator;
   process.env.SUCCESS_ID_KEY = specific_service_config ? specific_service_config.successIdKey : default_config.successIdKey;
   process.env.ERROR_KEY = specific_service_config ? specific_service_config.errorKey : default_config.errorKey;
@@ -121,14 +113,13 @@ function email_test_startup (current_service_name) {
  */
 function email_test_teardown () {
 
-    delete process.env.CURRENT_SERVICE;
+  delete process.env.SENDEMAIL_SERVICE;
   delete process.env.SUCCESS_SIMULATOR;
   delete process.env.SUCCESS_ID_KEY;
   delete process.env.ERROR_KEY;
 }
 
-// undefined means using the sending service set by default
-var services_to_test = [undefined];
+var services_to_test = [];
 for (var service_name in service.service_configs) {
   services_to_test.push(service_name);
 };

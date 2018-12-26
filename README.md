@@ -111,6 +111,26 @@ export MAILGUN_SENDING_DOMAIN=YOURDOMAIN
 > If you are ***new*** to ***environment variables***, we have a
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables
 
+#### Explicitly setting a service
+
+It's theoretically possible that your environment could contain configuration for multiple sending services. In that case, the library can't reliably decide which sending service you want to use and throws an error.
+
+To overcome this, you can add the following line to your `.env` file:
+
+```sh
+export SENDEMAIL_SERVICE={{ one of our possible service names, all lowercase }}
+```
+
+`sendemail` will then use that service to send, ignoring the available configuration
+for any other services.
+
+The valid names of our available services:
+
+- "ses"
+- "mailgun"
+
+(or see `lib/service.js`)
+
 
 ### 3. Create your *Template(s)*
 

@@ -12,11 +12,11 @@ var test = require('tape');
 // it as we need to manage state for each test
 var ENV_STUB = {};
 
-for (var service_name in service.service_configs) {
-  service.service_configs[service_name].required_env.forEach(function (envVar) {
+service.service_configs.forEach(function (conf) {
+  conf.required_env.forEach(function (envVar) {
     ENV_STUB[envVar] = process.env[envVar];
   });
-}
+});
 
 test(file + " attempt to determine a service with no services configured", function (t) {
   clear_environment();
@@ -77,25 +77,15 @@ test(file + " determine service implicitly, from environment", function (t) {
 });
 
 /**
- * Removes all configuration for a specified service from the environment
- *
- * @param {String} specific_service — name of a sending service
- * @returns undefined
- */
-function unconfigure_service (specific_service) {
-  service.service_configs[specific_service].required_env.forEach(function (envVar) {
-    delete process.env[envVar];
-  });
-}
-
-/**
  * Adds service specific configuration to environment
  *
  * @param {String} specific_service — name of a sending service
  * @returns undefined
  */
 function configure_service (specific_service) {
-  service.service_configs[specific_service].required_env.forEach(function (envVar) {
+  service.service_configs.find(function (conf) {
+    return conf.name === specific_service;
+  }).required_env.forEach(function (envVar) {
      process.env[envVar] = ENV_STUB[envVar];
   });
 }
@@ -106,9 +96,11 @@ function configure_service (specific_service) {
  * @returns undefined
  */
 function configure_environment_ambiguously () {
-  for (var service_name in service.service_configs) {
+  service.service_configs.map(function (conf) {
+    return conf.name;
+  }).forEach(function (service_name) {
     configure_service(service_name);
-  }
+  });
 }
 
 /**
@@ -118,8 +110,10 @@ function configure_environment_ambiguously () {
  * @returns undefined
  */
 function clear_environment () {
-  for (var service_name in service.service_configs) {
-    unconfigure_service(service_name);
-  }
+  service.service_configs.forEach(function (conf) {
+    conf.required_env.forEach(function (envVar) {
+      delete process.env[envVar];
+    })
+  });
   delete process.env.SENDEMAIL_SERVICE;
 }

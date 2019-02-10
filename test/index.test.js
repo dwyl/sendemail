@@ -2,9 +2,10 @@ require('env2')('.env');
 
 var fs = require('fs');
 
+// hardcoded, random selection; prevents service.initialize
+// (at the top of lib/index) from throwing
+process.env.SENDEMAIL_SERVICE='ses';
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
-var email = sendemail.email;
-var sendMany = sendemail.sendMany;
 var service = require('../lib/service.js');
 var test = require('tape');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];
@@ -75,6 +76,10 @@ test(file + " compile .txt template", function (t) {
 
 //// EMAIL SPECIFIC TESTS
 
+// For easier access to sending functions
+// We reassign them in email_test_startup, run before each sending test
+var email, sendMany;
+
 /**
  * Sets state for each test on startup, using a specific service
  * when requested (and requested service is valid and configured).
@@ -86,7 +91,7 @@ function email_test_startup (current_service_name) {
 
   var SERVICE_TESTING = {
     mailgun: {
-      errorKey: "status",
+      errorKey: "statusCode",
       successIdKey: "id",
       // Mailgun doesn't offer a test mailbox, so you need to authorize a recipient in your dashboard
       successSimulator: process.env.MAILGUN_AUTHORIZED_RECIPIENT,
@@ -100,10 +105,23 @@ function email_test_startup (current_service_name) {
 
   var specific_service_config = SERVICE_TESTING[current_service_name];
   process.env.SENDEMAIL_SERVICE = current_service_name;
-  process.env.SUCCESS_SIMULATOR = specific_service_config ? specific_service_config.successSimulator : default_config.successSimulator;
-  process.env.SUCCESS_ID_KEY = specific_service_config ? specific_service_config.successIdKey : default_config.successIdKey;
-  process.env.ERROR_KEY = specific_service_config ? specific_service_config.errorKey : default_config.errorKey;
+  process.env.SUCCESS_SIMULATOR = specific_service_config.successSimulator;
+  process.env.SUCCESS_ID_KEY = specific_service_config.successIdKey;
+  process.env.ERROR_KEY = specific_service_config.errorKey;
+
+  // We decache the library's index file
+  // so we can re-require it, thereby rerunning
+  // service.initialize based on our changed env settings
+  decache('../lib/index.js');
+  sendemail = require('../lib/index.js');
+  email = sendemail.email;
+  sendMany = sendemail.sendMany;
 }
+
+/**
+  In order to ensure we rerun service init, we need to decache the main lib
+  What happens to the the .email  and sendMany refs?
+**/
 
 /**
  * Removes all configuration set at test runtime, ensuring tests
@@ -119,12 +137,11 @@ function email_test_teardown () {
   delete process.env.ERROR_KEY;
 }
 
-var services_to_test = [];
-for (var service_name in service.service_configs) {
-  services_to_test.push(service_name);
-};
-
-services_to_test.forEach(function (specific_service) {
+service.service_configs
+  .map(function(conf) {
+    return conf.name;
+  })
+  .forEach(function (specific_service) {
   // Annotates tests with current sending service
   var service_test_description = file + " — " + (specific_service || "Default Sender") + ":";
 

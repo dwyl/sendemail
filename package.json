@@ -42,7 +42,7 @@
     "goodparts": "1.2.1",
     "istanbul": "^0.4.0",
     "pre-commit": "1.1.2",
-    "tap-spec": "^4.1.1",
+    "tap-spec": "^5.0.0",
     "tape": "^4.2.2"
   },
   "pre-commit": [
@@ -52,6 +52,6 @@
   "dependencies": {
     "aws-sdk": "^2.3.7",
     "handlebars": "^4.0.3",
-    "mailgun.js": "^2.0.1"
+    "mailgun-js": "^0.22.0"
   }
 }

@@ -63,7 +63,7 @@ people with *specific needs*.
 
 ### Checklist (*everything you need to get started in 5 minutes*)
 + [ ] install the `sendemail` module from NPM
-+ [ ] Ensure that you have an an account on your email service of choice
++ [ ] Ensure that you have an account for your email service of choice
 + [ ] set the required [*environment variables*](https://github.com/dwyl/learn-environment-variables) (*see below*)
 + [ ] If you don't already have a /**templates** directory in your
 project create one!
@@ -231,10 +231,11 @@ please ***tell us***: https://github.com/dwyl/sendemail/issues
 Whether you choose AWS or Mailgun, you start off in a _sandbox environment_
 
 This means, generally:
+
 - low limit on the number of emails you can send (usually daily allowance)
 - you can send to and from only verified (manually whitelisted) email addresses, not any random email address from a random person stumbling across your site as in production use
 
-You're going to want to move out of this environment for sending email on a public project (in most cases)
+You're going to want to move out of this environment for sending email on a public project (in most cases).
 
 #### AWS SES
 
@@ -253,10 +254,9 @@ https://aws.amazon.com/ses/faqs/ (2) search for "apply" in section 4 and
 
 #### Mailgun
 
-When you first sign up, Mailgun will provide a sandbox domain, which you can send from to test your integration. While in this sandbox, without a verified domain, you are limited to *300 emails per day*
+When you first sign up, Mailgun will provide a sandbox domain, from which you can send to test your integration. While in this sandbox, without a verified domain, you are limited to *300 emails per day*
 
-Moreover, while you can send from any email address, you can send TO only verified email
-addresses (requires a manual email verification step with the inbox owner)
+Moreover, while using your sandbox domain, you can send from any email address, but you can send to authorized email addresses ONLY (in your Mailgun dashboard, under your sandbox domain's settings, add the recipient address to the domain's "Authorized Recipients" list; an invitation will then be sent, requiring manual verification, to the inbox owner).
 
 Once you're happy with your integration, you'll need to do the following:
 

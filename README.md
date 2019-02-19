@@ -159,6 +159,9 @@ var email = sendemail.email;
 
 var person = {
   name : "Jenny",
+  // If your service account is still in sandbox mode, you must have authorized
+  // this email address as a recipient (see "Moving out of a sandbox environment"
+  // section below)
   email: "your.name+test" + Math.random() + "@gmail.com", // person.email can also accept an array of emails
   subject:"Welcome to DWYL :)"
 }

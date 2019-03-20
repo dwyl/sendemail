@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "quick": "./node_modules/tape/bin/tape ./test/*.js",
-    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.js",
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.js | tap-spec",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "lint": "node_modules/.bin/goodparts lib/"
   },
@@ -42,6 +42,7 @@
     "goodparts": "1.2.1",
     "istanbul": "^0.4.0",
     "pre-commit": "1.1.2",
+    "tap-spec": "^5.0.0",
     "tape": "^4.2.2"
   },
   "pre-commit": [
@@ -50,6 +51,7 @@
   ],
   "dependencies": {
     "aws-sdk": "^2.3.7",
-    "handlebars": "^4.0.3"
+    "handlebars": "^4.0.3",
+    "mailgun-js": "^0.22.0"
   }
 }

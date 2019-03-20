@@ -41,13 +41,16 @@ of technical decisions (*for pragmatic reasons*):
 1. use [***environment variables***](https://github.com/dwyl/learn-environment-variables)
 for storing sensitive information (*API Keys*)
 and projects-specific configuration (*Template Directory*)
-2. use ***[Amazon Web Services Simple Email Service](https://aws.amazon.com/ses/getting-started/) ("AWS SES")***
-for *reliably* sending email messages because it has good documentation,
-excellent "*deliverability*" and ***no minimum*** spend (10 cents per 1000 emails sent)!
-(_there's also a **generous** "[**Free Tier**](https://aws.amazon.com/ses/pricing/)" of **65k emails per month** if you're new to AWS_)
-3. use ***Handlebars*** for email template rendering. Handlebars is very
+2. use ***Handlebars*** for email template rendering. Handlebars is very
 easy to use and allows us to send ***beautiful*** **HTML** emails without
 the complexity or learning curve of many other view libraries.
+3. We currently support the following Email Services
+
+    - **[Amazon Web Services Simple Email Service](https://aws.amazon.com/ses/getting-started/) ("AWS SES")**
+    - **[Mailgun](https://www.mailgun.com/)**
+
+Both are reliable, well-documented, offer excellent "*deliverability*", and have fairly generous free tiers.
+For more information, check out the [Service Details](#service-details) section below
 
 > **Note**: if you prefer to use a different Email Service provider or template/view
 library for your project,
@@ -60,15 +63,15 @@ people with *specific needs*.
 
 ### Checklist (*everything you need to get started in 5 minutes*)
 + [ ] install the `sendemail` module from NPM
-+ [ ] Ensure that you have an AWS Account and have downloaded your credentials.
-+ [ ] set the required [*environment variable*](https://github.com/dwyl/learn-environment-variables) (*see below*)
++ [ ] Ensure that you have an account for your email service of choice
++ [ ] set the required [*environment variables*](https://github.com/dwyl/learn-environment-variables) (*see below*)
 + [ ] If you don't already have a /**templates** directory in your
 project create one!
 + [ ] create a pair of email templates in your /**templates** directory
 one called `hello.txt` the other `hello.html`
 + [ ] borrow the code for `hello.txt` and `hello.html` from the **/examples/templates** directory of this project!
 + [ ] create a file called `welcome.js` and paste some sample
-code in it (see: [/examples/templates/**send-welcome-email.js**]() )
+code in it (see: [/examples/templates/**send-welcome-email.js**](/examples/templates/send-welcome-email.js) )
 
 ### 1. Install `sendemail` from NPM
 
@@ -78,14 +81,16 @@ npm install sendemail --save
 
 ### 2. Set your *Environment Variables*
 
-`sendemail` requires you set ***four*** environment variable to
-*securely* store your AWS API Keys.
+`sendemail` requires you set environment variables for your email service's API keys
 
 > We recommend you use [`env2`](https://github.com/dwyl/env2) to load your
 Environment Variables from a file so you can easily keep track of which
 variables you are using in each environment.
 
-Create a file in the root of your project called `.env` and paste the following:
+Create a file in the root of your project called `.env` and paste the following, varying by email service:
+
+#### AWS SES
+
 ```sh
 export TEMPLATE_DIRECTORY=./examples/templates
 export SENDER_EMAIL_ADDRESS=your.aws.verified.email.address@gmail.com
@@ -94,8 +99,37 @@ export AWS_ACCESS_KEY_ID=YOURKEY
 export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET
 ```
 
+#### Mailgun
+
+```sh
+export TEMPLATE_DIRECTORY=./examples/templates
+export SENDER_EMAIL_ADDRESS=your.sending.email.address@gmail.com
+export MAILGUN_API_KEY=YOURKEY
+export MAILGUN_SENDING_DOMAIN=YOURDOMAIN
+```
+
 > If you are ***new*** to ***environment variables***, we have a
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables
+
+#### Explicitly setting a service
+
+It's theoretically possible that your environment could contain configuration for multiple sending services. In that case, the library can't reliably decide which sending service you want to use and throws an error.
+
+To overcome this, you can add the following line to your `.env` file:
+
+```sh
+export SENDEMAIL_SERVICE={{ one of our possible service names, all lowercase }}
+```
+
+`sendemail` will then use that service to send, ignoring the available configuration
+for any other services.
+
+The valid names of our available services:
+
+- "ses"
+- "mailgun"
+
+(or see `lib/service.js`)
 
 
 ### 3. Create your *Template(s)*
@@ -125,6 +159,9 @@ var email = sendemail.email;
 
 var person = {
   name : "Jenny",
+  // If your service account is still in sandbox mode, you must have authorized
+  // this email address as a recipient (see "Moving out of a sandbox environment"
+  // section below)
   email: "your.name+test" + Math.random() + "@gmail.com", // person.email can also accept an array of emails
   subject:"Welcome to DWYL :)"
 }
@@ -142,19 +179,19 @@ email('welcome', person, function(error, result){
 
 For *full code of working example* see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)
 Note: you still need to set your *environment variables*
-for the email to be sent.
+for the email to be sent. The example will work regardless of which service you use; our public API is platform agnostic
 
 
 #### More Options?:
 
-If you wish to send to multiple recipients of include CC or BCC recipients,
-use the sendMany method. This allows you to provide an options object 
-with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset options. 
+If you wish to send to multiple recipients or include CC or BCC recipients,
+use the sendMany method. This allows you to provide an options object
+with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset options.
  e.g.
- 
+
 ```js
   var sendemail   = require('sendemail');
-  
+
   var options = {
     templateName: 'hello',
     context: {
@@ -183,15 +220,27 @@ ___
 ### Which Email Service Provider?
 
 We are *currently* using ***AWS SES*** for ***dwyl***.
+We also support **Mailgun**
 
 If you want to use an alternative mail sender,
-e.g: [sendgrid](http://sendgrid.com/)
-or [mailgun](https://www.mailgun.com/pricing)
+e.g: [sendgrid](http://sendgrid.com/), [sendinblue](https://www.sendinblue.com/), etc.
+
 please ***tell us***: https://github.com/dwyl/sendemail/issues
 (*we are* ***always*** *happy to help*)
 
 
-### Moving out of AWS SES sandbox environment.
+### Moving out of a sandbox environment.
+
+Whether you choose AWS or Mailgun, you start off in a _sandbox environment_
+
+This means, generally:
+
+- low limit on the number of emails you can send (usually daily allowance)
+- you can send to and from only verified (manually whitelisted) email addresses, not any random email address from a random person stumbling across your site as in production use
+
+You're going to want to move out of this environment for sending email on a public project (in most cases).
+
+#### AWS SES
 
 When you first sign up to AWS, you are provided with a _sandbox account_.
 With this, you can send up to *200 emails a day,* to email addresses that you
@@ -206,8 +255,22 @@ increase in your SES Sending Limit; (1) click on the following link,
 https://aws.amazon.com/ses/faqs/ (2) search for "apply" in section 4 and
 (3) click 'apply'.
 
+#### Mailgun
 
-### Which View/Template Libaray?
+When you first sign up, Mailgun will provide a sandbox domain, from which you can send to test your integration. While in this sandbox, without a verified domain, you are limited to *300 emails per day*
+
+Moreover, while using your sandbox domain, you can send from any email address, but you can send to authorized email addresses ONLY (in your Mailgun dashboard, under your sandbox domain's settings, add the recipient address to the domain's "Authorized Recipients" list; an invitation will then be sent, requiring manual verification, to the inbox owner).
+
+Once you're happy with your integration, you'll need to do the following:
+
+1. *Upgrade your account* This requires entering your credit card information. **Mailgun charges you only if you exceed your free monthly allowance (10,000 emails sent)**
+2. Add your website's domain to your account
+3. Go into your DNS registrar's account and create SPF and DKIM records, standard TXT records for signing emails sent from your domain that email servers receiving your mail use to verify that the message sent is legitimately from your domain ( *Mailgun provides the values for these records in your dashboard* ) instead of rejecting your messages because the recipient server wasn't sent from the domain the message is claiming it was sent from.
+    - Interested in learning more? Here's a [short, simple read explaining DKIM and SPF](https://blog.woodpecker.co/cold-email/spf-dkim/)
+4. Wait for Mailgun to verify that the records are set. Like any other DNS changes, this may take 24-48 hours (though typically much less)
+
+
+### Which View/Template Libaray?
 
 For *simplicity* we are using
 [***Handlebars***](http://handlebarsjs.com/),
@@ -233,8 +296,7 @@ In our *experience*, *while* most *modern* email clients
 have `HTML` email ***enabled by default***,
 *often* the people who *prefer* ***text-only***
 (e.g: people with Blackberry phones,
-***visual/physical impairment*** or *company* email
-email systems - *with aggressive filtering*)
+***visual/physical impairment*** or *company* email systems - *with aggressive filtering*)
 are "***higher value***" customers. Also,
 possibly *more importantly* (*depending on who is using your product/service*) you can have *technical privacy-concious* people
 that ***only*** read `.txt` email to avoid sending
@@ -243,6 +305,23 @@ non-technical people, focus on the fact that `.txt` email
 is more ***accessible*** and prevents your messages getting
 blocked by spam filters.
 
+### Setting up .env file for testing
+
+Because we support multiple sending services, our .env file,
+for testing purposes, becomes a little complicated to ensure we
+run all of our tests again all of our supported services.
+
+1. Create a `.env` file in project root
+2. Copy and paste, then set values for, each service's environment variables (see step 2 of setup checklist),
+except the values shared across all services (`TEMPLATE_DIRECTORY` and `SENDER_EMAIL_ADDRESS`)
+3. Set an additional MAILGUN_AUTHORIZED_RECIPIENT var, which is whatever email address you've
+set as an authorized recipient in Mailgun (if you're still in a sandbox) or any recipient you
+feel ok sending test emails to if you're domain is already verified.
+
+Now the tests should all run and pass, looping through all services and running our
+set of email-sending tests again each.
+
+
 ### High volume of emails when running automated tests?
 When testing functions which will subsequently call methods in third party libraries,
 your tests no longer need to run through those methods,
@@ -250,7 +329,7 @@ you can instead assume that the third party method will give back what they say 
 (since these tests should already exist in the library you are using).
 
 Once you are sure there are [sufficient tests in place](https://codecov.io/github/dwyl/sendemail?branch=master) for the method you will stub, you may proceed with a test double.
-For this library there are significant benefits for using a test double for the `email` method (see #49).
+For this library there are significant benefits for using a test double for the `email` method (see [#49](https://github.com/dwyl/sendemail/issues/49)).
 
 ###### The following is a quick example of how to implement a test stub:
 If you have a helper function `notifyUser` which will subsequently call `require('sendemail').email`, this can be stubbed with:
@@ -298,7 +377,7 @@ Check out the [article in background reading](https://semaphoreci.com/community/
 
 ## Useful Links:
 
-### Background Reading
+### Background Reading
 
 + Designing for the inbox:
 https://www.campaignmonitor.com/dev-resources/guides/design/
@@ -313,13 +392,25 @@ https://litmus.com/blog/best-practices-for-plain-text-emails-a-look-at-why-theyr
 + Best practices for using test doubles (spies, stubs and mocks)
 https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js
 
-### Technical/Implementation Detail
+### Service Details
+
+#### AWS SES
 
 + Detail: https://aws.amazon.com/ses/details/
 + Getting Started: https://aws.amazon.com/ses/getting-started/
 + Video Tutorial: https://www.youtube.com/watch?v=0NT8KRXRFG8
 + Basic Tutorial: http://timstermatic.github.io/blog/2013/08/14/sending-emails-with-node-dot-js-and-amazon-ses/
 + Testing: http://docs.aws.amazon.com/ses/latest/DeveloperGuide/mailbox-simulator.html
++ Pricing: https://aws.amazon.com/ses/pricing/
+
+#### Mailgun
+
++ Mailgun's official JS library: (https://github.com/mailgun/mailgun-js)
++ Detail: https://www.mailgun.com/sending-email
++ Getting Started: https://documentation.mailgun.com/en/latest/quickstart.html
+  + The code samples there are, of course, using Mailgun's official library, not the independent one
++ Basic Tutorial: http://blog.mailgun.com/how-to-send-transactional-emails-in-a-nodejs-app-using-the-mailgun-api/
++ Pricing: https://www.mailgun.com/pricing
 
 ### Stats/Trends
 

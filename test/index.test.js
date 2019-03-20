@@ -1,13 +1,16 @@
 require('env2')('.env');
+
+var fs = require('fs');
+
+// hardcoded, random selection; prevents service.initialize
+// (at the top of lib/index) from throwing
+process.env.SENDEMAIL_SERVICE='ses';
 var sendemail = require('../lib/index.js'); // auto-set TEMPLATE_DIR
-var email = sendemail.email;
-var sendMany = sendemail.sendMany;
-var path = require('path');
+var service = require('../lib/service.js');
 var test = require('tape');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];
 var file = dir + __filename.replace(__dirname, '');
 var decache = require('decache');
-var SUCCESS_SIMULATOR = 'success@simulator.amazonses.com';
 
 var TEMPLATE_DIR = process.env.TEMPLATE_DIRECTORY; // copy
 delete process.env.TEMPLATE_DIRECTORY; // delete
@@ -70,160 +73,267 @@ test(file + " compile .txt template", function (t) {
   t.end()
 });
 
-test(file + " Force Fail in Email for a single email", function (t) {
-  var person = {
-    "name": "Bounce",
-    "email": "invalid.email.address",
-    "subject": "Welcome to DWYL :)"
-  };
-  email('hello', person, function (err) {
-    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
-    t.end();
-  });
-});
 
-test(file + " Force Fail in Email for an array of invalid emails", function (t) {
-  var person = {
-    "name": "Bounce",
-    "email": ["invalid.email.address", "otherinvalid.email.address"],
-    "subject": "Welcome to DWYL :)"
-  };
-  email('hello', person, function (err) {
-    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
-    t.end();
-  });
-});
+//// EMAIL SPECIFIC TESTS
 
-test(file + " Force Fail in Email for an array of valid emails and one invalid email", function (t) {
-  var person = {
-    "name": "Bounce",
-    "email": ["success@simulator.amazonses.com", "invalid.email.address", "success@simulator.amazonses.com"],
-    "subject": "Welcome to DWYL :)"
-  };
-  email('hello', person, function (err) {
-    t.equal(err.statusCode, 400, "Invalid Mandrill Key");
-    t.end();
-  });
-});
+// For easier access to sending functions
+// We reassign them in email_test_startup, run before each sending test
+var email, sendMany;
 
-test(file + " send email (Success) for a single email", function (t) {
-  var person = {
-    name: "Success",
-    email: "success@simulator.amazonses.com",
-    subject: "Welcome to DWYL :)"
-  };
+/**
+ * Sets state for each test on startup, using a specific service
+ * when requested (and requested service is valid and configured).
+ *
+ * @param {String} [current_service_name] - name of a sending service
+ * @returns {undefined}
+ */
+function email_test_startup (current_service_name) {
 
-  email('hello', person, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end();
-  });
-});
-
-test(file + " send email (Success) for an array of emails", function (t) {
-  var person = {
-    name: "Success",
-    email: ["success@simulator.amazonses.com", "success@simulator.amazonses.com"],
-    subject: "Welcome to DWYL :)"
-  };
-
-  email('hello', person, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end();
-  });
-});
-
-test(file + " sendMany email To CC BCC (Success)", function (t) {
-
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
+  var SERVICE_TESTING = {
+    mailgun: {
+      errorKey: "statusCode",
+      successIdKey: "id",
+      // Mailgun doesn't offer a test mailbox, so you need to authorize a recipient in your dashboard
+      successSimulator: process.env.MAILGUN_AUTHORIZED_RECIPIENT,
     },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: [null],
-    bccAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR]
+    ses: {
+      errorKey: "statusCode",
+      successIdKey: "MessageId",
+      successSimulator: "success@simulator.amazonses.com"
+    }
   };
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end();
+  var specific_service_config = SERVICE_TESTING[current_service_name];
+  process.env.SENDEMAIL_SERVICE = current_service_name;
+  process.env.SUCCESS_SIMULATOR = specific_service_config.successSimulator;
+  process.env.SUCCESS_ID_KEY = specific_service_config.successIdKey;
+  process.env.ERROR_KEY = specific_service_config.errorKey;
+
+  // We decache the library's index file
+  // so we can re-require it, thereby rerunning
+  // service.initialize based on our changed env settings
+  decache('../lib/index.js');
+  sendemail = require('../lib/index.js');
+  email = sendemail.email;
+  sendMany = sendemail.sendMany;
+}
+
+/**
+  In order to ensure we rerun service init, we need to decache the main lib
+  What happens to the the .email  and sendMany refs?
+**/
+
+/**
+ * Removes all configuration set at test runtime, ensuring tests
+ * are totally independent, configuration-wise.
+ *
+ * @returns {undefined}
+ */
+function email_test_teardown () {
+
+  delete process.env.SENDEMAIL_SERVICE;
+  delete process.env.SUCCESS_SIMULATOR;
+  delete process.env.SUCCESS_ID_KEY;
+  delete process.env.ERROR_KEY;
+}
+
+service.service_configs
+  .map(function(conf) {
+    return conf.name;
   })
-});
+  .forEach(function (specific_service) {
+  // Annotates tests with current sending service
+  var service_test_description = file + " — " + (specific_service || "Default Sender") + ":";
 
-test(file + " sendMany email To CC(Success)", function (t) {
+  test(service_test_description + " Force Fail in Email for a single email", function (t) {
+    email_test_startup(specific_service);
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: [SUCCESS_SIMULATOR],
-    bccAddresses: null
-  };
+    var person = {
+      "name": "Bounce",
+      "email": "invalid.email.address",
+      "subject": "Welcome to DWYL :)"
+    };
+    email('hello', person, function (err, data) {
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end()
-  })
-});
+      t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " Force Fail in Email for an array of invalid emails", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      "name": "Bounce",
+      "email": ["invalid.email.address", "otherinvalid.email.address"],
+      "subject": "Welcome to DWYL :)"
+    };
+    email('hello', person, function (err) {
+      t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " Force Fail in Email for an array of valid emails and one invalid email", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      "name": "Bounce",
+      "email": [process.env.SUCCESS_SIMULATOR, "invalid.email.address", process.env.SUCCESS_SIMULATOR],
+      "subject": "Welcome to DWYL :)"
+    };
+    email('hello', person, function (err, data) {
+
+      if (specific_service === 'mailgun') {
+          t.ok(true, 'Mailgun doesn\'t throw in this case, but queues up messages for valid addresses and ignores the invalid ones');
+      } else {
+          t.equal(err[process.env.ERROR_KEY], 400, "Invalid Mandrill Key");
+      }
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " send email (Success) for a single email", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      name: "Success",
+      email: process.env.SUCCESS_SIMULATOR,
+      subject: "Welcome to DWYL :)"
+    };
+
+    email('hello', person, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " send email (Success) for an array of emails", function (t) {
+    email_test_startup(specific_service);
+    var person = {
+      name: "Success",
+      email: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      subject: "Welcome to DWYL :)"
+    };
+
+    email('hello', person, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
+      t.end();
+    });
+  });
+
+  test(service_test_description + " sendMany email To CC BCC (Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: [null],
+      bccAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR]
+    };
+
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
+      t.end();
+    });
+
+  });
+
+  test(service_test_description + " sendMany email To CC(Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: [process.env.SUCCESS_SIMULATOR],
+      bccAddresses: null
+    };
+
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
+
+      email_test_teardown();
+      t.end();
+    });
+  });
 
 
-test(file + " sendMany email To (Success)", function (t) {
+  test(service_test_description + " sendMany email To (Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: null,
+      bccAddresses: null
+    };
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: null,
-    bccAddresses: null
-  };
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end()
-  })
-});
+      email_test_teardown();
+      t.end();
+    });
 
-test(file + " send email To BCC(Success)", function (t) {
+  });
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: [SUCCESS_SIMULATOR, SUCCESS_SIMULATOR],
-    ccAddresses: null,
-    bccAddresses: [SUCCESS_SIMULATOR]
-  };
+  test(service_test_description + " send email To BCC(Success)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: [process.env.SUCCESS_SIMULATOR, process.env.SUCCESS_SIMULATOR],
+      ccAddresses: null,
+      bccAddresses: [process.env.SUCCESS_SIMULATOR]
+    };
 
-  sendMany(options, function (err, data) {
-    t.ok(data.MessageId.length > 0, 'Email Sent!');
-    t.end()
-  })
-});
+    sendMany(options, function (err, data) {
+      t.ok(data[process.env.SUCCESS_ID_KEY].length > 0, 'Email Sent!');
 
-test(file + " send email All null(Force Failure)", function (t) {
+      email_test_teardown();
+      t.end();
+    });
+  });
 
-  var options = {
-    templateName: 'hello',
-    context: {
-      mydate: 'Feb 17 2017'
-    },
-    subject: 'Welcome to Email',
-    toAddresses: null,
-    ccAddresses: null,
-    bccAddresses: null
-  };
+  test(service_test_description + " send email All null(Force Failure)", function (t) {
+    email_test_startup(specific_service);
+    var options = {
+      templateName: 'hello',
+      context: {
+        mydate: 'Feb 17 2017'
+      },
+      subject: 'Welcome to Email',
+      toAddresses: null,
+      ccAddresses: null,
+      bccAddresses: null
+    };
 
-  sendMany(options, function (err) {
-    t.equal(err.statusCode, 400, "No Email Address provided");
-    t.end()
-  })
+    sendMany(options, function (err) {
+      t.equal(err[process.env.ERROR_KEY], 400, "No Email Address provided");
+
+      email_test_teardown();
+      t.end();
+    });
+  });
 });

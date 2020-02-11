@@ -1,7 +1,17 @@
 language: node_js
 node_js:
-  - 4.3.2
-before_install:
-  - pip install --user codecov
+- '12'
+cache:
+  directories:
+  - node_modules
+before_script:
+- npm run lint
 after_success:
-  - codecov --file coverage/lcov.info --disable search
+- bash <(curl -s https://codecov.io/bash)
+env:
+  global:
+  - AWS_REGION=eu-west-1
+  - TEMPLATE_DIRECTORY=./examples/templates
+  - secure: CnhDoNK9+UNzt/nxPeePkB3o9fCJuIAA4bWLolnwq6ICXx+TxWcDXGZIg7tIVAVhrKdtTh6/BwVXpNm7ikVZatoKk84LDL2yawG40dGUGJ8E4qcYU3HBOuE8n44D1Sck9R7t+oxECyC29E0qhsJevUbYwqO9L/dj39P2xC251fk=
+  - secure: nzaEkSgJ1XfNYuRJ2zBEvZCyfAo6LUVVzChPj4ZhlW7QPrq1rllQww4lGQdkZnU2garsZa4fTU/lLAplu2n9HgdNr9PT9aTsP/xba6R8oDUbaXUiTEocrlsp6MyvfjWURcNfkHJoOUvT5+ev0FNVAaG4icTkwfimYYa86bYZxhQ=
+  - secure: XQ8tOqcBplt1jDCQ3GGLGHua93ieoAFiXYWpybOENeH8gzsCBKxk4FlHeC5b91TaBqitilp+OyZfL/n8LHX5UH8hgh02eJGkyG+oL3rzrOG4CvuLyYEfvDAk72+KqrhAKY/ApvFhOob71+jSN+zgAd9ezAuYy4JOIbWxCoPMlYQ=

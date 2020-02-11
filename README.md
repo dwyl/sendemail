@@ -91,11 +91,11 @@ variables you are using in each environment.
 
 Create a file in the root of your project called `.env` and paste the following:
 ```sh
-export TEMPLATE_DIRECTORY=./examples/templates
-export SENDER_EMAIL_ADDRESS=your.aws.verified.email.address@gmail.com
 export AWS_REGION=eu-west-1
 export AWS_ACCESS_KEY_ID=YOURKEY
 export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET
+export SENDER_EMAIL_ADDRESS=aws.verified.email@dwyl.com
+export TEMPLATE_DIRECTORY=./examples/templates
 ```
 
 > If you are ***new*** to ***environment variables***, we have a
@@ -119,7 +119,7 @@ Here's what our ***pair*** of templates look like side-by-side:
 If you are stuck, have a look at **/examples/templates/**
 
 
-### 4. *Send* an Email! ✉️ 
+### 4. *Send* an Email! ✉️
 
 Create a file called `email.js` and paste the following:
 

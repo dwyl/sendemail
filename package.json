@@ -12,21 +12,10 @@
     "type": "git",
     "url": "git+https://github.com/dwyl/sendemail.git"
   },
-  "keywords": [
-    "hapi",
-    "email",
-    "verification",
-    "registration",
-    "reset",
-    "welcome",
-    "send",
-    "simple",
-    "template"
-  ],
   "author": "@dwyl & pals!",
   "license": "GPL-2.0",
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 12.5.0"
   },
   "bugs": {
     "url": "https://github.com/dwyl/sendemail/issues"
@@ -35,22 +24,52 @@
   "directories": {
     "test": "test"
   },
+  "dependencies": {
+    "aws-sdk": "^2.614.0",
+    "handlebars": "^4.7.3"
+  },
   "devDependencies": {
-    "decache": "^4.1.0",
-    "env2": "^2.0.7",
+    "decache": "^4.5.1",
+    "env2": "^2.2.2",
     "goodparts": "1.2.1",
     "istanbul": "^0.4.0",
     "nyc": "^15.0.0",
-    "pre-commit": "1.1.2",
+    "pre-commit": "1.2.2",
     "tap-nyc": "^1.0.3",
-    "tape": "^4.2.2"
+    "tape": "^4.13.0"
   },
   "pre-commit": [
     "lint",
     "test"
   ],
-  "dependencies": {
-    "aws-sdk": "^2.3.7",
-    "handlebars": "^4.0.3"
-  }
+  "nyc": {
+    "check-coverage": true,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "include": [
+      "lib/index.js"
+    ],
+    "exclude": [
+      "test/"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": false,
+    "all": true,
+    "report-dir": "./coverage"
+  },
+  "keywords": [
+    "email",
+    "verification",
+    "registration",
+    "reset",
+    "welcome",
+    "send",
+    "simple",
+    "template"
+  ]
 }

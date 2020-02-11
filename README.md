@@ -15,6 +15,7 @@ e.g: ***welcome***, **newsletter**, **verification**,
 [![devDependencies Status](https://david-dm.org/dwyl/sendemail/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/sendemail?type=dev)
 [![HitCount](http://hits.dwyl.com/dwyl/sendemail.svg)](http://hits.dwyl.com/dwyl/sendemail)
 [![npm package version](https://img.shields.io/npm/v/sendemail.svg?color=brightgreen&style=flat-square)](https://www.npmjs.com/package/dpl)
+[![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat-square "Only Node.js v12 LTS supported")](http://nodejs.org/download/)
 
 </div>
 <br />
@@ -82,14 +83,20 @@ npm install sendemail --save
 
 ### 2. Set your *Environment Variables* 🔐
 
-`sendemail` requires you set ***four*** environment variable to
-*securely* store your AWS API Keys.
+`sendemail` requires you set
+***five*** environment variables.
+The first 4 relate to your AWS account
+The `TEMPLATE_DIRECTORY` should contain your email
+[templates](https://github.com/dwyl/sendemail/tree/master/examples/templates).
 
-> We recommend you use [`env2`](https://github.com/dwyl/env2) to load your
-Environment Variables from a file so you can easily keep track of which
+> We recommend using [`env2`](https://github.com/dwyl/env2)
+to load your Environment Variables from a file
+so that you can easily keep track of which
 variables you are using in each environment.
 
-Create a file in the root of your project called `.env` and paste the following:
+Create a file in the root of your project called `.env`
+and paste the following:
+
 ```sh
 export AWS_REGION=eu-west-1
 export AWS_ACCESS_KEY_ID=YOURKEY
@@ -97,6 +104,8 @@ export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET
 export SENDER_EMAIL_ADDRESS=aws.verified.email@dwyl.com
 export TEMPLATE_DIRECTORY=./examples/templates
 ```
+
+Update the values to the _real_ ones for your AWS account.
 
 > If you are ***new*** to ***environment variables***, we have a
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables

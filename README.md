@@ -1,21 +1,25 @@
-# SendEmail
+<div align="center">
 
-[![Build Status](https://travis-ci.org/dwyl/sendemail.svg?branch=tidyup)](https://travis-ci.org/dwyl/sendemail)
-[![codecov.io](https://codecov.io/github/dwyl/sendemail/coverage.svg?branch=master)](https://codecov.io/github/dwyl/sendemail?branch=master)
-[![Code Climate](https://codeclimate.com/github/dwyl/sendemail/badges/gpa.svg)](https://codeclimate.com/github/dwyl/sendemail)
-[![Dependency Status](https://david-dm.org/dwyl/sendemail.svg)](https://david-dm.org/dwyl/sendemail)
-[![devDependency Status](https://david-dm.org/dwyl/sendemail/dev-status.svg)](https://david-dm.org/dwyl/sendemail#info=devDependencies)
-[![JavaScript Style Guide: Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg?style=flat)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
+# `sendemail` 💌
 
-[![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat "Node.js 0.12 and 4.x latest both supported")](http://nodejs.org/download/)
-[![npm](https://img.shields.io/npm/v/sendemail.svg)](https://www.npmjs.com/package/sendemail)
-[![Join the chat at https://gitter.im/dwyl/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dwyl/chat/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-*Send* ***welcome, verification, password reset, update and reminder emails***
-from *any* node.js app.
+Effortlessly send email from any Node.js App
+using Amazon's Simple Email Service (SES). <br />
+e.g: ***welcome***, **newsletter**, **verification**,
+**password reset** and **notification** emails
 
 
-## Why?
+[![Build Status](https://img.shields.io/travis/dwyl/sendemail/master.svg?style=flat-square)](https://travis-ci.org/dwyl/sendemail)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/sendemail/master.svg?style=flat-square)](http://codecov.io/github/dwyl/sendemail?branch=master)
+[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/dwyl/sendemail?color=brightgreen&style=flat-square)](https://codeclimate.com/github/dwyl/sendemail)
+[![dependencies Status](https://david-dm.org/dwyl/sendemail/status.svg?style=flat-square)](https://david-dm.org/dwyl/sendemail)
+[![devDependencies Status](https://david-dm.org/dwyl/sendemail/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/sendemail?type=dev)
+[![HitCount](http://hits.dwyl.com/dwyl/sendemail.svg)](http://hits.dwyl.com/dwyl/sendemail)
+[![npm package version](https://img.shields.io/npm/v/sendemail.svg?color=brightgreen&style=flat-square)](https://www.npmjs.com/package/dpl)
+
+</div>
+<br />
+
+## Why?  🤷
 
 While we would *prefer* for *email* to be *phased out*
 and replaced by something *better*, the fact remains
@@ -27,7 +31,7 @@ means of (*digital*) communication.
 Given that email is not going away, we need to make
 sending email to people as ***simple and reliable*** as possible.
 
-## What?
+## What? 💭
 
 *Reliably* ***Send*** *beautiful* **email** with ***dependable delivery***.
 When email that *has* to get through as quickly as possible
@@ -56,7 +60,7 @@ We are happy to support alternatives to make this project more
 *useful* to other
 people with *specific needs*.
 
-## *How*?
+## *How*? ✅
 
 ### Checklist (*everything you need to get started in 5 minutes*)
 + [ ] install the `sendemail` module from NPM
@@ -70,13 +74,13 @@ one called `hello.txt` the other `hello.html`
 + [ ] create a file called `welcome.js` and paste some sample
 code in it (see: [/examples/templates/**send-welcome-email.js**]() )
 
-### 1. Install `sendemail` from NPM
+### 1. Install `sendemail` from NPM 📦
 
 ```sh
 npm install sendemail --save
 ```
 
-### 2. Set your *Environment Variables*
+### 2. Set your *Environment Variables* 🔐
 
 `sendemail` requires you set ***four*** environment variable to
 *securely* store your AWS API Keys.
@@ -98,7 +102,7 @@ export AWS_SECRET_ACCESS_KEY=YOURSUPERSECRET
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables
 
 
-### 3. Create your *Template(s)*
+### 3. Create your *Template(s)* 📝
 
 Create a ***pair*** of templates *simple* `.html` (*pretty design*) *and* `.txt` (*plaintext*) templates to *get started*.
 
@@ -115,7 +119,7 @@ Here's what our ***pair*** of templates look like side-by-side:
 If you are stuck, have a look at **/examples/templates/**
 
 
-### 4. *Send* an Email!
+### 4. *Send* an Email! ✉️ 
 
 Create a file called `email.js` and paste the following:
 
@@ -148,13 +152,13 @@ for the email to be sent.
 #### More Options?:
 
 If you wish to send to multiple recipients of include CC or BCC recipients,
-use the sendMany method. This allows you to provide an options object 
-with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset options. 
+use the sendMany method. This allows you to provide an options object
+with an array of `toAddresses`, `ccAddresses`, and `bccAddresses` and charset options.
  e.g.
- 
+
 ```js
   var sendemail   = require('sendemail');
-  
+
   var options = {
     templateName: 'hello',
     context: {

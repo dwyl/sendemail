@@ -6,3 +6,4 @@ coverage
 .idea
 npm-debug.log
 rootkey.csv
+.nyc_output

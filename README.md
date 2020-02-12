@@ -94,7 +94,19 @@ to load your Environment Variables from a file
 so that you can easily keep track of which
 variables you are using in each environment.
 
-Create a file in the root of your project called `.env`
+#### 2.1 Verify Your Email Address on AWS SES
+
+In order to send email from a specific email address,
+you will need to verify that email address on AWS SES.
+The process is quite simple,
+but there are a few steps involved,
+so we created a separate step-by-step guide:
+[How to setup AWS SES verified email?](https://github.com/dwyl/learn-amazon-web-services/blob/master/ses.md)
+
+#### 2.2 Create an `.env` File
+
+Once you have a _verified_ email on AWS SES,
+create a file in the root of your project called `.env`
 and paste the following:
 
 ```sh

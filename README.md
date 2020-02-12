@@ -340,7 +340,7 @@ https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-m
 + Email Adoption: https://en.wikipedia.org/wiki/HTML_email#Adoption
 
 
-## Want *Examples*? [![Join the chat at https://gitter.im/dwyl/chat](https://badges.gitter.im/Ask%20For%20More.svg)](https://gitter.im/dwyl/chat/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## Want *Examples*?
 
 There are *many* situations where you want to send people email.
 
@@ -352,14 +352,13 @@ your product/service.
 see: [/examples/templates/**send-welcome-email.js**](https://github.com/dwyl/sendemail/blob/master/examples/send-welcome-email.js)
 
 
+### *Verification* Email Address
 
-### *Verify* Email Address
-
-As part of registering new people for your Hapi app you
+As part of registering new people for your app you
 will need to *verify* their email addresses to ensure that people
 are not signing up with *fake* emails (or *worse* using someone else's email!)
 
-### *Set a New Password*
+### *Reset Password*
 
 People forget passwords, we need to help them
 set a new password as quickly & securely as possible.
@@ -371,4 +370,4 @@ Remind people they signed up but have not *used* the product/service?
 ### *Notification* Email?
 
 Sam liked your post/photo/update ...
-social validation that your life has meaning!
+social validation that your life has _meaning_! 😉

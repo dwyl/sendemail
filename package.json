@@ -1,6 +1,6 @@
 {
   "name": "sendemail",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Simplifies reliably sending emails from your node.js apps!",
   "main": "lib/index.js",
   "scripts": {
@@ -25,18 +25,18 @@
     "test": "test"
   },
   "dependencies": {
-    "aws-sdk": "^2.614.0",
-    "handlebars": "^4.7.3"
+    "aws-sdk": "^2.670.0",
+    "handlebars": "^4.7.6"
   },
   "devDependencies": {
     "decache": "^4.5.1",
     "env2": "^2.2.2",
     "goodparts": "1.2.1",
     "istanbul": "^0.4.0",
-    "nyc": "^15.0.0",
+    "nyc": "^15.0.1",
     "pre-commit": "1.2.2",
     "tap-nyc": "^1.0.3",
-    "tape": "^4.13.0"
+    "tape": "^5.0.0"
   },
   "pre-commit": [
     "lint",

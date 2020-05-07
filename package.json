@@ -31,7 +31,7 @@
   "devDependencies": {
     "decache": "^4.5.1",
     "env2": "^2.2.2",
-    "goodparts": "1.2.1",
+    "goodparts": "1.3.0",
     "istanbul": "^0.4.0",
     "nyc": "^15.0.1",
     "pre-commit": "1.2.2",

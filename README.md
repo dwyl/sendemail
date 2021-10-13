@@ -119,6 +119,19 @@ export TEMPLATE_DIRECTORY=./examples/templates
 
 Update the values to the _real_ ones for your AWS account.
 
+> **Note**: If you are using this on a Next.js API with Vercel, try this:
+
+```sh
+export VERCEL_API_ENABLED=true
+export AMAZON_REGION=eu-west-1
+export AMAZON_ACCESS_KEY_ID=YOURKEY
+export AMAZON_SECRET_ACCESS_KEY=YOURSUPERSECRET
+export SENDER_EMAIL_ADDRESS=aws.verified.email@dwyl.com
+export TEMPLATE_DIRECTORY=./examples/templates
+```
+
+> This is because Vercel reserved some variables which this package is not compatible with: https://vercel.com/docs/concepts/projects/environment-variables#reserved-environment-variables
+
 > If you are ***new*** to ***environment variables***, we have a
 > ***quick introduction***: https://github.com/dwyl/learn-environment-variables
 

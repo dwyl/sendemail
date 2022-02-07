@@ -9,13 +9,13 @@ e.g: ***welcome***, **newsletter**, **verification**,
 
 
 [![Build Status](https://img.shields.io/travis/dwyl/sendemail/master.svg?style=flat-square)](https://travis-ci.org/dwyl/sendemail)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/sendemail/master.svg?style=flat-square)](http://codecov.io/github/dwyl/sendemail?branch=master)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/sendemail/master.svg?style=flat-square)](https://codecov.io/github/dwyl/sendemail?branch=master)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/dwyl/sendemail?color=brightgreen&style=flat-square)](https://codeclimate.com/github/dwyl/sendemail)
 [![dependencies Status](https://david-dm.org/dwyl/sendemail/status.svg?style=flat-square)](https://david-dm.org/dwyl/sendemail)
 [![devDependencies Status](https://david-dm.org/dwyl/sendemail/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/sendemail?type=dev)
-[![HitCount](http://hits.dwyl.com/dwyl/sendemail.svg)](http://hits.dwyl.com/dwyl/sendemail)
+[![HitCount](https://hits.dwyl.com/dwyl/sendemail.svg)](https://hits.dwyl.com/dwyl/sendemail)
 [![npm package version](https://img.shields.io/npm/v/sendemail.svg?color=brightgreen&style=flat-square)](https://www.npmjs.com/package/dpl)
-[![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat-square "Only Node.js v12 LTS supported")](http://nodejs.org/download/)
+[![Node.js Version](https://img.shields.io/node/v/sendemail.svg?style=flat-square "Only Node.js v12 LTS supported")](https://nodejs.org/download/)
 
 </div>
 <br />
@@ -27,7 +27,7 @@ and replaced by something *better*, the fact remains
 that *most* people still use email as their *primary*
 means of (*digital*) communication.
 
-![dilbert-email](http://jointeffortmarketing.com/wp-content/uploads/2013/10/dilbert-email.png)
+![dilbert-email](https://jointeffortmarketing.com/wp-content/uploads/2013/10/dilbert-email.png)
 
 Given that email is not going away, we need to make
 sending email to people as ***simple and reliable*** as possible.
@@ -210,7 +210,7 @@ ___
 We are *currently* using ***AWS SES*** for ***dwyl***.
 
 If you want to use an alternative mail sender,
-e.g: [sendgrid](http://sendgrid.com/)
+e.g: [sendgrid](https://sendgrid.com/)
 or [mailgun](https://www.mailgun.com/pricing)
 please ***tell us***: https://github.com/dwyl/sendemail/issues
 (*we are* ***always*** *happy to help*)
@@ -223,7 +223,7 @@ With this, you can send up to *200 emails a day,* to email addresses that you
 have registered on your sandbox environment. For some use cases this is fine,
 but for those who want a *higher daily sending quota*, want to send emails
 without the *restriction of registering recipient emails* upfront, amongst [other
-reasons](http://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html)
+reasons](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html)
 'moving out' of your sandbox might be beneficial.
 For many services, this _upgrade_ comes with a cost, but with AWS SES, this is
 not necessarily the case. A quick and easy way to do so is to apply for an
@@ -235,7 +235,7 @@ https://aws.amazon.com/ses/faqs/ (2) search for "apply" in section 4 and
 ### Which View/Template Libaray?
 
 For *simplicity* we are using
-[***Handlebars***](http://handlebarsjs.com/),
+[***Handlebars***](https://handlebarsjs.com/),
 handlebars is ***tried and tested*** and while it does not attempt
 to do anything *fancy* ("*VirtualDOM*"), it does allow
 you to do sophisticated templates with includes and iterators
@@ -330,7 +330,7 @@ https://www.campaignmonitor.com/dev-resources/guides/design/
 (*plenty of detail & highly informative*)
 + Who Cares About Plain Text [email]?
 https://blog.aweber.com/email-deliverability/who-cares-about-plain-text.htm
-+ Can Email Be Responsive? http://alistapart.com/article/can-email-be-responsive
++ Can Email Be Responsive? https://alistapart.com/article/can-email-be-responsive
 + Coding your emails (*What’s so hard about HTML emails?*):
 https://www.campaignmonitor.com/dev-resources/guides/coding/
 + Best Practices for Plain Text Emails and Why They’re Important:
@@ -343,8 +343,8 @@ https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-m
 + Detail: https://aws.amazon.com/ses/details/
 + Getting Started: https://aws.amazon.com/ses/getting-started/
 + Video Tutorial: https://www.youtube.com/watch?v=0NT8KRXRFG8
-+ Basic Tutorial: http://timstermatic.github.io/blog/2013/08/14/sending-emails-with-node-dot-js-and-amazon-ses/
-+ Testing: http://docs.aws.amazon.com/ses/latest/DeveloperGuide/mailbox-simulator.html
++ Basic Tutorial: https://timstermatic.github.io/blog/2013/08/14/sending-emails-with-node-dot-js-and-amazon-ses/
++ Testing: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/mailbox-simulator.html
 
 ### Stats/Trends
 
